@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<listener>
+		<listener-class>com.ontologycentral.estatwrap.webapp.Listener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>id</servlet-name>
+		<servlet-class>com.ontologycentral.estatwrap.webapp.IdentifierServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>page</servlet-name>
+		<servlet-class>com.ontologycentral.estatwrap.webapp.PageServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>data</servlet-name>
+		<servlet-class>com.ontologycentral.estatwrap.webapp.DataServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>dictionary</servlet-name>
+		<servlet-class>com.ontologycentral.estatwrap.webapp.DictionaryServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>id</servlet-name>
+		<url-pattern>/id/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>page</servlet-name>
+		<url-pattern>/page/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>data</servlet-name>
+		<url-pattern>/data/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>dictionary</servlet-name>
+		<url-pattern>/dic/*</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
