@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="estatwrap" basedir="." default="dist">
+<property name="name" value="estatwrap"/>
+<property name="version" value="trunk"/>
+<property name="dist" value="dist"/>
+  <path id="classpath">
+    <fileset dir="war/WEB-INF/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+		
+  <target name="prepare">
+    <tstamp />
+    <mkdir dir="bin"/>
+    <mkdir dir="dist"/>
+  </target>
+	  
+  <target name="dist" depends="prepare">
+    <javac destdir="bin"
+	   srcdir="src"
+           source="1.5" target="1.5">
+      <classpath refid="classpath"/>
+    </javac>
+
+    <jar jarfile="${dist}/${name}-${version}.jar" basedir="bin">
+      <zipfileset src="lib/commons-cli-1.2.jar"/>
+      <manifest>
+	<attribute name="Main-Class" value="com.ontologycentral.estatwrap.Main"/>
+      </manifest>
+    </jar>
+
+    <jar jarfile="${dist}/${name}-${version}-lib.jar" basedir="bin"/>
+  </target>
+		
+  <target name="clean">
+    <delete dir="bin"/>
+    <delete>
+      <fileset dir="dist">
+	<include name="*.jar"/>
+      </fileset>
+    </delete>
+  </target>	  
+</project>
