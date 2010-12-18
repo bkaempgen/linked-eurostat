@@ -7,6 +7,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<listener>
 		<listener-class>com.ontologycentral.estatwrap.webapp.Listener</listener-class>
 	</listener>
+	
+	<servlet>
+		<servlet-name>proxy</servlet-name>
+		<servlet-class>com.ontologycentral.estatwrap.webapp.ProxyServlet</servlet-class>
+	</servlet>
 
 	<servlet>
 		<servlet-name>id</servlet-name>
@@ -43,6 +48,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>dictionary</servlet-name>
 		<url-pattern>/dic/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>proxy</servlet-name>
+		<url-pattern>/proxy</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

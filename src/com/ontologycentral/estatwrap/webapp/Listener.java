@@ -50,14 +50,13 @@ public class Listener implements ServletContextListener {
 
 	    Map<String, String> map = null;
 	    
-//	    if (cache.containsKey(TOC)) {
-//	    	map = (Map<String, String>)cache.get(TOC);
-//	    }
+	    if (cache.containsKey(TOC)) {
+	    	map = (Map<String, String>)cache.get(TOC);
+	    }
 
 	    if (map == null) {
 	    	try {
 	    		URL u = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?sort=1&file=table_of_contents.txt");
-	    	//"http://europa.eu/estatref/download/everybody/table_of_contents.txt");
 
 	    		HttpURLConnection conn = (HttpURLConnection)u.openConnection();
 	    		InputStream is = conn.getInputStream();
@@ -67,13 +66,16 @@ public class Listener implements ServletContextListener {
 	    		cache.put(TOC, map);
 	    	} catch (MalformedURLException e) {
 	    		e.printStackTrace();
+	    		map = new HashMap<String, String>();
 	    	} catch (IOException e) {
 	    		e.printStackTrace();
+	    		map = new HashMap<String, String>();
 	    	} catch (XMLStreamException e) {
 	    		e.printStackTrace();
+	    		map = new HashMap<String, String>();
 	    	}
 	    }
-		
+	    //map = new HashMap<String, String>();
 	    ctx.setAttribute(TOC, map);	    
 	}
 
