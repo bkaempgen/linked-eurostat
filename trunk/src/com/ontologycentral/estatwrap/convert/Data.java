@@ -17,7 +17,7 @@ public class Data {
 	BufferedReader _in;
 	
 	// here, use a threshold to limit the amount of data converted (GAE limitations)
-	public static int MAX_COLS = 16;
+	public static int MAX_COLS = 24;
 	public static int MAX_ROWS = 1024;
 
 	public Data(Reader sr) throws IOException {
