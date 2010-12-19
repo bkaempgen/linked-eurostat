@@ -1,18 +1,13 @@
 package com.ontologycentral.estatwrap.webapp;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.zip.GZIPInputStream;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
@@ -21,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-
-import com.ontologycentral.estatwrap.convert.Data;
 
 @SuppressWarnings("serial")
 public class PageServlet extends HttpServlet {
@@ -69,6 +62,26 @@ public class PageServlet extends HttpServlet {
 			ch.writeStartElement("title");
 			ch.writeCharacters(toc.get(id));
 			ch.writeEndElement();
+			
+			ch.writeStartElement("script");
+			ch.writeAttribute("type", "text/javascript");
+			ch.writeAttribute("src", "../vis/protovis-r3.2.js");
+			ch.writeCharacters(" ");
+			ch.writeEndElement();
+
+			ch.writeStartElement("script");
+			ch.writeAttribute("type", "text/javascript");
+			ch.writeAttribute("src", "http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js");
+			ch.writeCharacters(" ");
+			ch.writeEndElement();
+
+			ch.writeStartElement("script");
+			ch.writeAttribute("type", "text/javascript");
+			ch.writeAttribute("src", "../vis/vis.js");
+			ch.writeCharacters(" ");
+			ch.writeEndElement();
+			
+			ch.writeEndElement();
 
 			ch.writeStartElement("body");
 
@@ -83,13 +96,44 @@ public class PageServlet extends HttpServlet {
 			ch.writeCharacters(toc.get(id));
 			ch.writeEndElement();
 
+			ch.writeStartElement("h2");
+			ch.writeCharacters("Visualisation");
+			ch.writeEndElement();
+
+			ch.writeStartElement("div");
+			ch.writeAttribute("id", "progress");
+			ch.writeStartElement("img");
+			ch.writeAttribute("src", "../vis/wait30trans.gif");			
+			ch.writeEndElement();
+			ch.writeEndElement();
+
+			ch.writeStartElement("div");
+			ch.writeAttribute("id", "error");
+			ch.writeEndElement();
+
+			ch.writeStartElement("div");
+			ch.writeAttribute("id", "map");
+			ch.writeEndElement();
+			
+			ch.writeStartElement("h2");
+			ch.writeCharacters("Query");
+			ch.writeEndElement();
+
+			ch.writeStartElement("code");
+			ch.writeAttribute("id", "query");
+			ch.writeCharacters(URLDecoder.decode("PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.%0D%0A}%0D%0A", "utf-8"));
+			ch.writeEndElement();
+
+			/*
 			ch.writeStartElement("p");
-			ch.writeStartElement("a");
-			ch.writeAttribute("href", "http://kiechle.e8u.de/hiwi/getImage.html?query=PREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+eus%3A+%3Chttp%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23%3E%0D%0A%0D%0ASELECT+%3Ftime+%3Fvalue+%3Fgeo%0D%0AWHERE+{%0D%0A+%3Fs+rdf%3Atype+%3Chttp%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + "%23class%3E+%3B%0D%0A+++eus%3Atime+%3Ftime+%3B%0D%0A+++eus%3Ageo+%3Fgeo+%3B%0D%0A+++rdf%3Avalue+%3Fvalue+.%0D%0A}%0D%0A%0D%0A%0D%0A%09&graph=graph");
+			ch.writeStartElement("a");			
+			
+			ch.writeAttribute("href", "../vis/timeline.html?query=PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.%0D%0A}%0D%0A");
+			//ch.writeAttribute("href", "http://kiechle.e8u.de/hiwi/getImage.html?query=PREFIX+rdf%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+eus%3A+%3Chttp%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23%3E%0D%0A%0D%0ASELECT+%3Ftime+%3Fvalue+%3Fgeo%0D%0AWHERE+{%0D%0A+%3Fs+rdf%3Atype+%3Chttp%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + "%23class%3E+%3B%0D%0A+++eus%3Atime+%3Ftime+%3B%0D%0A+++eus%3Ageo+%3Fgeo+%3B%0D%0A+++rdf%3Avalue+%3Fvalue+.%0D%0A}%0D%0A%0D%0A%0D%0A%09&graph=graph");
 			ch.writeCharacters("Visualisation");
 			ch.writeEndElement();
 			ch.writeEndElement();
-				
+*/
 			ch.writeStartElement("p");
 			ch.writeCharacters("Source: ");
 			ch.writeStartElement("a");

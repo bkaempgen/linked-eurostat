@@ -25,7 +25,6 @@ public class ProxyServlet extends HttpServlet {
 		BufferedOutputStream out = null;
 
 		HttpURLConnection con;
-		//HttpURLConnection.setFollowRedirects(false);
 
 		int status;
 
