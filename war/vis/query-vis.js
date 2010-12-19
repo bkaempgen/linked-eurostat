@@ -2,34 +2,23 @@
  * Main runner method.
  */
 $(document).ready(function() {
-	/*
 	var url = document.URL;
 	var query = url.substring(url.indexOf("=")+1);
 	query = unescape(query);
 	query = query.replace(/\+/g," ");
-	*/
-	var query = $("#query").clone();
-	load(htmldecode(query));
-	/*
+	
+	load(query);
 	query = query.replace(/\</g, "&lt;");
 	query = query.replace(/\>/g, "&gt;");
 	$("#query").html(query);	  	 	
-	*/
 });
-
-function htmldecode(value){ 
-  return $('<div/>').html(value).text(); 
-}
 
 jQuery.ajaxSetup({
   beforeSend: function() {
-	    $('#progress').show();
+     $('#progress').show()
   },
-  complete: function() {
-	    $('#progress').hide();
-  },
-  error: function() {   
-	    $("#error").html("Error looking up results. Might be because of GAE timeout. Try again in a bit.");
+  complete: function(){
+     $('#progress').hide()
   },
   success: function() {}
 });
