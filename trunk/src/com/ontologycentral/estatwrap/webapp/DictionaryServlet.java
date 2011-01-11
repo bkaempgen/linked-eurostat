@@ -100,7 +100,7 @@ public class DictionaryServlet extends HttpServlet {
             	}
             }
             
-    		resp.setHeader("Cache-Control", "public");
+            resp.setHeader("Cache-Control", "public");
     		Calendar c = Calendar.getInstance();
     		c.add(Calendar.DATE, 1);
     		resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));

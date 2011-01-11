@@ -31,7 +31,7 @@ public class ProxyServlet extends HttpServlet {
 		String q = req.getParameter("query");
 		String a = req.getParameter("accept");
 
-		URL uri = new URL("http://q.ontologycentral.com/sparql?query=" + URLEncoder.encode(q, "utf-8") + "&accept=" + URLEncoder.encode(a, "utf-8"));
+		URL uri = new URL("http://qcrumb.com/sparql?query=" + URLEncoder.encode(q, "utf-8") + "&accept=" + URLEncoder.encode(a, "utf-8"));
 
 		_log.info("Fetching :" + uri.toString());
 

@@ -101,14 +101,15 @@ function visualiseResults(/* JSON */ data){
 	// Bindings of the data
 	var bindings = data.results.bindings; 
     } catch (e) {
-	alert("Loading data failed." + " " + e);
+	$('#progress').hide();
+	$("#error").html("Loading data failed." + " " + e);
     }		
 
     try {
 	var time = bindings[0][xlabel].value;
     } catch(e) {
-	alert("Your query does not contain any bindings. Plese verify your query." + " " + e);
-	alert(bindings);
+	$('#progress').hide();
+	$("#error").html("Your query does not contain any bindings. Plese verify your query." + " " + e);
     }
 
     // Choosing the right parser

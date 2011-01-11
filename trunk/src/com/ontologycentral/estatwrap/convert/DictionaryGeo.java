@@ -83,11 +83,54 @@ public class DictionaryGeo extends Dictionary {
 
 	Map<String, String> _map;
 	
+	Map<String, String> _dbpedia;
+
 	public DictionaryGeo(Reader is) throws IOException {
 		super(is);
 		_c = new HashSet<String>(Arrays.asList(COUNTRIES));
 		_ec = new HashSet<String>(Arrays.asList(EUC));
 		_map = new HashMap<String, String>();
+		_dbpedia = new HashMap<String, String>();
+		
+		_dbpedia.put("AR", "Argentina");
+		_dbpedia.put("AT", "Austria");
+		_dbpedia.put("BE", "Belgium");
+		_dbpedia.put("BO", "Bolivia");
+		_dbpedia.put("BA", "Bosnia_and_Herzegovina");
+		_dbpedia.put("BR", "Brazil");
+		_dbpedia.put("BG", "Bulgaria");
+		_dbpedia.put("CN", "China");
+		_dbpedia.put("CO", "Colombia");
+		_dbpedia.put("HR", "Croatia");
+		_dbpedia.put("CZ", "Czech_Republic");
+		_dbpedia.put("DK", "Denmark");
+		_dbpedia.put("EE", "Estonia");
+		_dbpedia.put("FI", "Finland");
+		_dbpedia.put("FR", "France");
+		_dbpedia.put("DE", "Germany");
+		_dbpedia.put("GR", "Greece");
+		_dbpedia.put("HU", "Hungary");
+		_dbpedia.put("IT", "Italy");
+		_dbpedia.put("JP", "Japan");
+		_dbpedia.put("LV", "Latvia");
+		_dbpedia.put("LI", "Liechtenstein");
+		_dbpedia.put("LT", "Lithuania");
+		_dbpedia.put("LU", "Luxembourg");
+		_dbpedia.put("MT", "Malta");
+		_dbpedia.put("MX", "Mexico");
+		_dbpedia.put("NL", "Netherlands");
+		_dbpedia.put("PE", "Peru");
+		_dbpedia.put("PL", "Poland");
+		_dbpedia.put("PT", "Portugal");
+		_dbpedia.put("RO", "Romania");
+		_dbpedia.put("SK", "Slovakia");
+		_dbpedia.put("SI", "Slovenia");
+		_dbpedia.put("ES", "Spain");
+		_dbpedia.put("SE", "Sweden");
+		_dbpedia.put("CH", "Switzerland");
+		_dbpedia.put("US", "United_states");
+		_dbpedia.put("UY", "Uruguay");
+
 		
 		_map.put("AR", "Argentina");
 		_map.put("AT", "Austria");
@@ -131,6 +174,12 @@ public class DictionaryGeo extends Dictionary {
 	}
 
 	public void addMappings(XMLStreamWriter out, String id) throws IOException, XMLStreamException {
+		if (_dbpedia.containsKey(id)) {
+			out.writeStartElement("owl:sameAs");
+			out.writeAttribute("rdf:resource", "http://dbpedia.org/resource/" + _dbpedia.get(id));			
+			out.writeEndElement();
+		}
+
 		if (_c.contains(id)) {
 			out.writeStartElement("owl:sameAs");
 			out.writeAttribute("rdf:resource", "http://ec.europa.eu/eurostat/ramon/rdfdata/countries.rdf#" + id);				
