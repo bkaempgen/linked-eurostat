@@ -98,10 +98,10 @@ public class DataServlet extends HttpServlet {
 			//   				}
 			//   			}
 
-//			resp.setHeader("Cache-Control", "public");
-//			Calendar c = Calendar.getInstance();
-//			c.add(Calendar.HOUR, 1);
-//			resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
+			resp.setHeader("Cache-Control", "public");
+			Calendar c = Calendar.getInstance();
+			c.add(Calendar.HOUR, 1);
+			resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
 			//resp.setHeader("Content-Encoding", "gzip");
 
 			XMLOutputFactory factory = (XMLOutputFactory)ctx.getAttribute(Listener.FACTORY);
