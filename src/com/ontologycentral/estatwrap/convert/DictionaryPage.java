@@ -2,12 +2,13 @@ package com.ontologycentral.estatwrap.convert;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class DictionaryPage {
-	public static void convert(XMLStreamWriter ch, String id, Reader sr) throws XMLStreamException, IOException {
+	public static void convert(XMLStreamWriter ch, String id, List<Reader> rs, String[] langs) throws XMLStreamException, IOException {
 		ch.writeStartDocument("utf-8", "1.0");
 
 		ch.writeStartElement("rdf:RDF");
@@ -36,17 +37,22 @@ public class DictionaryPage {
 
         Dictionary d = null;
         
-        if ("geo".equals(id)) {
-        	d = new DictionaryGeo(sr);
-        } else if ("unit".equals(id)) {
-        	d = new DictionaryUnits(sr);
-        } else if ("nace".equals(id)) {
-        	d = new DictionaryNace(sr);
-        } else {
-        	d = new Dictionary(sr);            	
+        for (int i = 0; i < rs.size(); i++) {
+        	Reader r = rs.get(i);
+        	String lang = langs[i];
+        	
+        	if ("geo".equals(id)) {
+        		d = new DictionaryGeo(r);
+        	} else if ("unit".equals(id)) {
+        		d = new DictionaryUnits(r);
+        	} else if ("nace".equals(id)) {
+        		d = new DictionaryNace(r);
+        	} else {
+        		d = new Dictionary(r);            	
+        	}
+
+        	d.convert(ch, lang);
         }
-        
-        d.convert(ch);
         
         ch.writeEndElement();
         ch.writeEndDocument();

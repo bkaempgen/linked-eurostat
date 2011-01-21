@@ -51,9 +51,9 @@ public class DataServlet extends HttpServlet {
 
 		ServletContext ctx = getServletContext();
 
-		try {
-			URL url = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=data/" + id + ".tsv.gz");
+		URL url = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=data/" + id + ".tsv.gz");
 
+		try {
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			InputStream is = new GZIPInputStream(conn.getInputStream());
 
@@ -84,15 +84,15 @@ public class DataServlet extends HttpServlet {
 
 			ch.close();
 		} catch (IOException e) {
-			resp.sendError(500, e.getMessage());
+			resp.sendError(500, url + ": " + e.getMessage());
 			e.printStackTrace();
 			return;
 		} catch (XMLStreamException e) {
-			resp.sendError(500, e.getMessage());
+			resp.sendError(500, url + ": " + e.getMessage());
 			e.printStackTrace();
 			return;
 		} catch (RuntimeException e) {
-			resp.sendError(500, e.getMessage());
+			resp.sendError(500, url + ": " + e.getMessage());
 			e.printStackTrace();
 			return;			
 		}

@@ -21,10 +21,8 @@ public class Dictionary {
 		_in = new BufferedReader(is);
 	}
 
-	public void convert(XMLStreamWriter out) throws IOException, XMLStreamException {
+	public void convert(XMLStreamWriter out, String lang) throws IOException, XMLStreamException {
 		String line = null;
-		
-		String lang = "en";
 		
 		while ((line = _in.readLine()) != null) {
 			line = line.trim();
