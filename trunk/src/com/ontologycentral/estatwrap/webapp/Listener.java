@@ -20,6 +20,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.stream.StreamSource;
 
 import com.ontologycentral.estatwrap.convert.ToC;
 
@@ -30,6 +33,8 @@ public class Listener implements ServletContextListener {
 	public static String FACTORY = "f";
 	public static String TOC = "t";
 	public static String CACHE = "c";
+	
+	public static String SDMX_T = "sdmx";	
 	
 	public void contextInitialized(ServletContextEvent event) {
 		ServletContext ctx = event.getServletContext();
@@ -48,6 +53,23 @@ public class Listener implements ServletContextListener {
         	e.printStackTrace();
         }
 
+		javax.xml.transform.TransformerFactory tf =
+		      javax.xml.transform.TransformerFactory.newInstance(
+			"net.sf.saxon.TransformerFactoryImpl",
+		    		  Thread.currentThread().getContextClassLoader()); 
+
+//		javax.xml.transform.TransformerFactory tf =
+//			javax.xml.transform.TransformerFactory.newInstance(); //"org.apache.xalan.processor.TransformerFactoryImpl", this.getClass().getClassLoader() ); 
+		
+		try {
+			Transformer t = tf.newTransformer(new StreamSource(ctx.getRealPath("/WEB-INF/dsd2rdf.xsl")));
+			ctx.setAttribute(SDMX_T, t);
+		} catch (TransformerConfigurationException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+
+        
 	    Map<String, String> map = null;
 	    
 	    if (cache.containsKey(TOC)) {
