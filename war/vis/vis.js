@@ -61,7 +61,8 @@ function load( /*String*/ querystring){
 	      }
 	);
     */
-    $.getJSON("../proxy", request, 
+    
+    $.getJSON("http://qcrumb.com/sparql", request, 
 	      function(data){				
 		  visualiseResults(data);		
 	      }

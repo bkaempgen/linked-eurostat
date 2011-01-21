@@ -43,7 +43,7 @@ public class DataPage {
 			ch.writeEndElement();
 		}
 		ch.writeStartElement("rdfs:comment");
-		ch.writeCharacters("Source: Eurostat (http://epp.eurostat.ec.europa.eu/) via estatwrap (http://estatwrap.ontologycentral.com/).");
+		ch.writeCharacters("Source: Eurostat (http://epp.eurostat.ec.europa.eu/) via Linked Eurostat (http://estatwrap.ontologycentral.com/).");
 		ch.writeEndElement();
 		ch.writeStartElement("rdfs:seeAlso");
 		ch.writeAttribute("rdf:resource", "http://epp.eurostat.ec.europa.eu/portal/page/portal/about_eurostat/corporate/copyright_licence_policy");
@@ -51,6 +51,11 @@ public class DataPage {
 		ch.writeStartElement("rdfs:seeAlso");
 		ch.writeAttribute("rdf:resource", "http://ontologycentral.com/2009/01/eurostat/");
 		ch.writeEndElement();
+
+		ch.writeStartElement("qb:structure");
+		ch.writeAttribute("rdf:resource", "../dsd/" + id + "#dsd");
+		ch.writeEndElement();
+		
 		ch.writeEndElement();
 		
 		Data d = new Data(in);

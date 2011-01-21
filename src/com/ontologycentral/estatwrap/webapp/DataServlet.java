@@ -51,20 +51,8 @@ public class DataServlet extends HttpServlet {
 
 		ServletContext ctx = getServletContext();
 
-		//   		Cache cache = (Cache)ctx.getAttribute(Listener.CACHE);
-		//   		StringReader sr = null;
-
 		try {
 			URL url = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=data/" + id + ".tsv.gz");
-			//URL url = new URL("http://europa.eu/estatref/download/everybody/data/" + id + ".tsv.gz");
-
-			//   			if (cache.containsKey(url)) {
-			//   				sr = new StringReader((String)cache.get(url));
-			//   			}
-			//   			
-			//   			if (sr == null) {
-			
-			//System.out.println(url);
 
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			InputStream is = new GZIPInputStream(conn.getInputStream());
@@ -79,24 +67,6 @@ public class DataServlet extends HttpServlet {
 			}
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(is, encoding));
-			//   				String l;
-			//   				StringBuilder sb = new StringBuilder();
-			//
-			//   				while ((l = in.readLine()) != null) {
-			//   					sb.append(l);
-			//   					sb.append('\n');
-			//   				}
-			//   				in.close();
-			//
-			//   				String str = sb.toString();
-			//   				sr = new StringReader(str);
-			//
-			//   				try {
-			//   					cache.put(url, str);
-			//   				} catch (RuntimeException e) {
-			//   					_log.info(e.getMessage());
-			//   				}
-			//   			}
 
 			resp.setHeader("Cache-Control", "public");
 			Calendar c = Calendar.getInstance();

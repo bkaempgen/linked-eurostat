@@ -21,7 +21,7 @@ public class DictionaryPage {
 		ch.writeStartElement("rdf:Description");
 		ch.writeAttribute("rdf:about", "");
 		ch.writeStartElement("rdfs:comment");
-		ch.writeCharacters("Source: Eurostat (http://epp.eurostat.ec.europa.eu/) via estatwrap (http://estatwrap.ontologycentral.com/).");
+		ch.writeCharacters("Source: Eurostat (http://epp.eurostat.ec.europa.eu/) via Linked Eurostat (http://estatwrap.ontologycentral.com/).");
 		ch.writeEndElement();
 		ch.writeStartElement("foaf:maker");
 		ch.writeAttribute("rdf:resource", "http://harth.org/andreas/foaf#ah");
