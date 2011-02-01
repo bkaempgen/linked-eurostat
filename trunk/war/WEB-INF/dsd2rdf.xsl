@@ -32,16 +32,25 @@
 	<dc:publisher>Eurostat (http://epp.eurostat.ec.europa.eu/) via Linked Eurostat (http://estatwrap.ontologycentral.com/)</dc:publisher>
       </rdf:Description>
 
-<!--
-The dimension components serve to identify the observations. A set of values for all the dimension components is sufficient to identify a single observation. Examples of dimensions include the time to which the observation applies, or a geographic region which the observation covers.
+      <!--
+	  The dimension components serve to identify the observations. A set of values for all the dimension components is sufficient to identify a single observation. Examples of dimensions include the time to which the observation applies, or a geographic region which the observation covers.
+	  
+	  The measure components represent the phenomenon being observed.
+	  
+	  The attribute components allow us to qualify and interpret the observed value(s). They enable specification of the units of measures, any scaling factors and metadata such as the status of the observation (e.g. estimated, provisional).
+	-->
 
-The measure components represent the phenomenon being observed.
-
-The attribute components allow us to qualify and interpret the observed value(s). They enable specification of the units of measures, any scaling factors and metadata such as the status of the observation (e.g. estimated, provisional).
--->
-<qb:DataStructureDefinition rdf:about="#dsd">
-  <xsl:for-each select="sdmx:CodeLists/structure:CodeList">
+      <qb:DataStructureDefinition rdf:about="#dsd">
 	<qb:component>
+	  <rdf:Description>
+	    <qb:measure>
+	      <rdfs:Property rdf:about="http://purl.org/linked-data/sdmx/2009/measure#obsValue"/>
+	    </rdfs:Property>
+	  </qb:measure>
+	</qb:component>
+
+	<xsl:for-each select="sdmx:CodeLists/structure:CodeList">
+	  <qb:component>
 	    <rdf:Description>
 	      <xsl:choose>
 		<xsl:when test="@id = 'CL_obs_status'">
@@ -54,13 +63,7 @@ The attribute components allow us to qualify and interpret the observed value(s)
 		  </qb:attribute>
 		</xsl:when>
 		<xsl:when test="@id = 'CL_FREQ'">
-		  <qb:measure>
-		    <rdfs:Property rdf:about="http://purl.org/linked-data/sdmx/2009/measure#obsValue">
-		      <qb:codeList>
-			<xsl:attribute name="rdf:resource">#<xsl:value-of select="@id"/></xsl:attribute>
-		      </qb:codeList>
-		    </rdfs:Property>
-		  </qb:measure>
+		  <!-- @@@missing -->
 		</xsl:when>
 		<xsl:when test="@id = 'CL_TIME_FORMAT'">
 		  <qb:dimension>
@@ -83,8 +86,8 @@ The attribute components allow us to qualify and interpret the observed value(s)
 		</xsl:otherwise>
 	      </xsl:choose>
 	    </rdf:Description>
-	</qb:component>
-	  </xsl:for-each>
+	  </qb:component>
+	</xsl:for-each>
       </qb:DataStructureDefinition>
 
       <xsl:apply-templates/>
