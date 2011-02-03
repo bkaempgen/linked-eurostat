@@ -1,14 +1,9 @@
 package com.ontologycentral.estatwrap.webapp;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.logging.Logger;
@@ -44,28 +39,29 @@ public class DsdServlet extends HttpServlet {
 		_log.info("retrieving " + u);
 		//System.out.println("retrieving " + _u);
 
-		HttpURLConnection conn = (HttpURLConnection)u.openConnection();
+		try {
+			HttpURLConnection conn = (HttpURLConnection)u.openConnection();
 
-		if (conn.getResponseCode() != 200) {
-			throw new RuntimeException("lookup on " + u + " resulted HTTP in status code " + conn.getResponseCode());
-		}
-
-		InputStream is = conn.getInputStream();
-
-		String encoding = conn.getContentEncoding();
-		if (encoding == null) {
-			encoding = "ISO-8859-1";
-		}
-
-		ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
-
-		ZipEntry ze;
-		while((ze = zis.getNextEntry()) != null) {
-			if (ze.getName().contains("dsd.xml") ) {
-				break;
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("lookup on " + u + " resulted HTTP in status code " + conn.getResponseCode());
 			}
-		}
-		/*
+
+			InputStream is = conn.getInputStream();
+
+			String encoding = conn.getContentEncoding();
+			if (encoding == null) {
+				encoding = "ISO-8859-1";
+			}
+
+			ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
+
+			ZipEntry ze;
+			while((ze = zis.getNextEntry()) != null) {
+				if (ze.getName().contains("dsd.xml") ) {
+					break;
+				}
+			}
+			/*
 		StringWriter writer = new StringWriter();
 		try {
 			char[] buffer = new char[1024];
@@ -77,29 +73,37 @@ public class DsdServlet extends HttpServlet {
 		} finally {
 			is.close();			
 		}
-			
+
 		String content = writer.getBuffer().toString();
 
 		_log.info(content);
-		*/
-		Transformer t = (Transformer)ctx.getAttribute(Listener.SDMX_T);
+			 */
+			Transformer t = (Transformer)ctx.getAttribute(Listener.SDMX_T);
 
-		resp.setContentType("application/rdf+xml");
+			resp.setContentType("application/rdf+xml");
 
-		try {
 			StreamSource ssource = new StreamSource(zis);
 			StreamResult sresult = new StreamResult(os);
-			
+
 			_log.info("lapplying xslt");
 
 			t.transform(ssource, sresult);
+
+			zis.close();
 		} catch (TransformerException e) {
 			e.printStackTrace(); 
 			resp.sendError(500, e.getMessage());
+			return;
+		} catch (IOException e) {
+			resp.sendError(500, u + ": " + e.getMessage());
+			e.printStackTrace();
+			return;
+		} catch (RuntimeException e) {
+			resp.sendError(500, u + ": " + e.getMessage());
+			e.printStackTrace();
+			return;			
 		}
-		
-		zis.close();
-		
+
 		os.close();
 	}
 }
