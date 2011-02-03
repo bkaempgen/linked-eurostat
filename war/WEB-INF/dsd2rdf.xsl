@@ -45,8 +45,8 @@
 	  <rdf:Description>
 	    <qb:measure>
 	      <rdfs:Property rdf:about="http://purl.org/linked-data/sdmx/2009/measure#obsValue"/>
-	    </rdfs:Property>
-	  </qb:measure>
+	    </qb:measure>
+	  </rdf:Description>
 	</qb:component>
 
 	<xsl:for-each select="sdmx:CodeLists/structure:CodeList">
