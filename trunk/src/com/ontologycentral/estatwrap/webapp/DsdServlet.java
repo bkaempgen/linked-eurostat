@@ -41,6 +41,8 @@ public class DsdServlet extends HttpServlet {
 
 		try {
 			HttpURLConnection conn = (HttpURLConnection)u.openConnection();
+			conn.setConnectTimeout(8*1000);
+			conn.setReadTimeout(8*1000);
 
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("lookup on " + u + " resulted HTTP in status code " + conn.getResponseCode());

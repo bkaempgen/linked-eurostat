@@ -27,6 +27,8 @@
 
     <jar jarfile="${dist}/${name}-${version}.jar" basedir="bin">
       <zipfileset src="lib/commons-cli-1.2.jar"/>
+      <zipfileset src="lib/servlet.jar"/>
+      <zipfileset src="lib/jcache-1.0-dev-3.jar"/>
       <manifest>
 	<attribute name="Main-Class" value="com.ontologycentral.estatwrap.Main"/>
       </manifest>

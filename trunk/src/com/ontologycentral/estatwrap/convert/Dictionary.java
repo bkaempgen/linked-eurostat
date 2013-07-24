@@ -16,9 +16,11 @@ public class Dictionary {
 	Logger _log = Logger.getLogger(this.getClass().getName());
 
 	BufferedReader _in;
+	String _file;
 
-	public Dictionary(Reader is) throws IOException {
+	public Dictionary(Reader is, String file) throws IOException {
 		_in = new BufferedReader(is);
+		_file = file;
 	}
 
 	public void convert(XMLStreamWriter out, String lang) throws IOException, XMLStreamException {
@@ -54,6 +56,8 @@ public class Dictionary {
 	}
 	
 	public void addMappings(XMLStreamWriter out, String id) throws IOException, XMLStreamException {
-		;
+		out.writeStartElement("owl:sameAs");
+		out.writeAttribute("rdf:resource", "http://eurostat.linked-statistics.org/dic/" + _file + "#" + id);			
+		out.writeEndElement();
 	}
 }

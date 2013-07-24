@@ -6,7 +6,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -81,12 +83,17 @@ public class DictionaryGeo extends Dictionary {
 	
 	Set<String> _ec;
 
+	Set<String> _nuts;
+
 	Map<String, String> _map;
 	
 	Map<String, String> _dbpedia;
 
-	public DictionaryGeo(Reader is) throws IOException {
-		super(is);
+	public DictionaryGeo(Reader is, String file, Set<String> nuts) throws IOException {
+		super(is, file);
+		
+		_nuts = nuts;
+		
 		_c = new HashSet<String>(Arrays.asList(COUNTRIES));
 		_ec = new HashSet<String>(Arrays.asList(EUC));
 		_map = new HashMap<String, String>();
@@ -109,6 +116,7 @@ public class DictionaryGeo extends Dictionary {
 		_dbpedia.put("FR", "France");
 		_dbpedia.put("DE", "Germany");
 		_dbpedia.put("GR", "Greece");
+		_dbpedia.put("EL", "Greece");
 		_dbpedia.put("HU", "Hungary");
 		_dbpedia.put("IT", "Italy");
 		_dbpedia.put("JP", "Japan");
@@ -173,7 +181,42 @@ public class DictionaryGeo extends Dictionary {
 		_map.put("UY", "Uruguay");
 	}
 
+	public void convert(XMLStreamWriter out, String lang) throws IOException, XMLStreamException {
+		String line = null;
+		
+		while ((line = _in.readLine()) != null) {
+			line = line.trim();
+			if (line.length() <= 0) {
+				continue;
+			}
+			try {
+				StringTokenizer st = new StringTokenizer(line, "\t");
+				String id = st.nextToken().trim();
+				String label = st.nextToken().trim();
+				//http://rdfdata.eionet.europa.eu/ramon/ontology/NUTSRegion
+				out.writeStartElement("ramon:NUTSRegion");
+				out.writeAttribute("rdf:ID", id);
+				
+				out.writeStartElement("rdfs:label");
+				out.writeAttribute("xml:lang", lang);
+				out.writeCharacters(label);
+				out.writeEndElement();
+				
+				addMappings(out, id);
+				
+				out.writeEndElement();
+			} catch (NoSuchElementException ne) {
+				System.err.println(line + " " + ne);
+			}
+		}
+		
+		_in.close();
+	}
+	
+	@Override
 	public void addMappings(XMLStreamWriter out, String id) throws IOException, XMLStreamException {
+		super.addMappings(out, id);
+		
 		if (_dbpedia.containsKey(id)) {
 			out.writeStartElement("owl:sameAs");
 			out.writeAttribute("rdf:resource", "http://dbpedia.org/resource/" + _dbpedia.get(id));			
@@ -198,8 +241,22 @@ public class DictionaryGeo extends Dictionary {
 			out.writeEndElement();			
 		}
 
-		out.writeStartElement("owl:sameAs");
-		out.writeAttribute("rdf:resource", "http://eris.okfn.org/ww/2010/12/eurostat/nuts#" + id);				
-		out.writeEndElement();
+		if (_nuts.contains(id)) {
+//			out.writeStartElement("owl:sameAs");
+//			out.writeAttribute("rdf:resource", "http://rdfdata.eionet.europa.eu/ramon/nuts/" + id);				
+//			out.writeEndElement();
+//
+//			out.writeStartElement("owl:sameAs");
+//			out.writeAttribute("rdf:resource", "http://eris.okfn.org/ww/2010/12/eurostat/nuts#" + id);				
+//			out.writeEndElement();
+//
+			out.writeStartElement("owl:sameAs");
+			out.writeAttribute("rdf:resource", "http://nuts.psi.enakting.org/id/" + id);				
+			out.writeEndElement();
+
+			out.writeStartElement("owl:sameAs");
+			out.writeAttribute("rdf:resource", "http://nuts.geovocab.org/id/" + id);				
+			out.writeEndElement();
+		}
 	}
 }

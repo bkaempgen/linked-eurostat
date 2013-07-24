@@ -123,7 +123,7 @@ public class Main {
 		if (cmd.hasOption("i")) {
 			DataPage.convert(ch, new HashMap<String, String>(), id, in);
 		} else if (cmd.hasOption("d")) {
-			DictionaryPage.convert(ch, id, in);
+			//DictionaryPage.convert(ch, id, in);
 		}
 
 		ch.close();

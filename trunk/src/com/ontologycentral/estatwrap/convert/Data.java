@@ -18,8 +18,8 @@ public class Data {
 	
 	// here, use a threshold to limit the amount of data converted (GAE limitations)
 	public static int MAX_COLS = 8;
-	public static int MAX_ROWS = 1024;
-
+	public static int MAX_ROWS = 1024*8;
+	
 	public Data(Reader sr) throws IOException {
 		_in = new BufferedReader(sr);
 	}
@@ -61,15 +61,15 @@ public class Data {
 	}
 
 	public void printTriple(Header h, Line l, XMLStreamWriter out, int bnodeid, String id) throws XMLStreamException {
-		List hd1 = h.getDim1();
-		List ld1 = l.getDim1();
+		List<String> hd1 = h.getDim1();
+		List<String> ld1 = l.getDim1();
 
 		if (hd1.size() != ld1.size()) {
 			System.err.println("header dimensions and line dimensions don't match!");
 		}
 
-		List hcol = h.getCols();
-		List lcol = l.getCols();
+		List<String> hcol = h.getCols();
+		List<String> lcol = l.getCols();
 
 		if (hcol.size() != lcol.size()) {
 			System.err.println("header columns and line columns don't match!");
@@ -89,16 +89,24 @@ public class Data {
 			}
 			end = hcol.size();
 		}
+		
+		if (start != 0 || end != hcol.size()) {
+    		out.writeStartElement("rdf:Description");
+    		out.writeAttribute("rdf:about", "");
+    		out.writeStartElement("rdfs:comment");
+    		out.writeCharacters("ATTENTION: file is truncated due to processing time restrictions.");
+    		out.writeEndElement();
+    		out.writeEndElement();
+		}
 
-		for (int i = start; i < end; ++i)
-		{
-			if (((String)lcol.get(i)).equals(":")) {
+		for (int i = start; i < end; ++i) {
+			if (((String)lcol.get(i)).trim().equals(":")) {
 				continue;
 			}
 			
     		out.writeStartElement("qb:Observation");
     		
-    		out.writeStartElement("qb:dataset");
+    		out.writeStartElement("qb:dataSet");
     		out.writeAttribute("rdf:resource", "/id/" + id + "#ds");
     		// @@@ workaround to get query processor to function
     		//out.writeAttribute("rdf:resource", id + "#ds");
@@ -106,16 +114,30 @@ public class Data {
     		out.writeEndElement();
 
 			for (int j = 0; j < hd1.size(); ++j) {
-	    		out.writeStartElement((String)hd1.get(j));
-	    		out.writeAttribute("rdf:resource", Dictionary.PREFIX + (String)hd1.get(j) + "#" + (String)ld1.get(j));
+				if (hd1.get(j).equals("time")) {
+					String time = convertTime(ld1.get(j));
+					out.writeStartElement("dcterms:date");
+					out.writeCharacters(time);
+					out.writeEndElement();
+				} else {
+					out.writeStartElement(hd1.get(j));
+					out.writeAttribute("rdf:resource", Dictionary.PREFIX + hd1.get(j) + "#" + ld1.get(j));
+					out.writeEndElement();
+				}
+			}
+			
+			if (h.getDim2().equals("time")) {
+				String time = convertTime(hcol.get(i));
+	    		out.writeStartElement("dcterms:date");
+	    		out.writeCharacters(time);
 	    		out.writeEndElement();
+			} else {
+				out.writeStartElement(h.getDim2());
+				out.writeAttribute("rdf:resource", Dictionary.PREFIX + h.getDim2() + "#" + hcol.get(i));
+				out.writeEndElement();
 			}
 
-    		out.writeStartElement((String)h.getDim2());
-    		out.writeAttribute("rdf:resource", Dictionary.PREFIX + (String)h.getDim2() + "#" + (String)hcol.get(i));
-    		out.writeEndElement();
-
-    		//http://purl.org/linked-data/sdmx/2009/measure#obsValue
+			//http://purl.org/linked-data/sdmx/2009/measure#obsValue
     		out.writeStartElement("sdmx-measure:obsValue");
     		String val = (String)lcol.get(i);
     		String note = null;
@@ -124,10 +146,48 @@ public class Data {
     			val = val.substring(0, val.indexOf(' '));
     			out.writeAttribute("rdf:datatype", Dictionary.PREFIX + "note#" + note);
     		}
-    		out.writeCharacters(val);
+
+    		if (":".equals(val)) {
+    			val = "";
+    		} else {
+    			try {
+    				double d = Double.parseDouble(val);
+    			} catch (NumberFormatException e) {
+    				_log.info("not a number " + val);
+    				val = "";
+    			}
+    		}
+    		
+			out.writeCharacters(val);
+
     		out.writeEndElement();
 
     		out.writeEndElement();
 		}
+	}
+	
+	String convertTime(String time) {
+		if (time.length() > 4) {
+			if (time.contains("M")) {
+				time = time.replace('M', '-');
+			} else if (time.contains("D")) {
+				time = time.replace('D', '-');
+			} else if (time.charAt(4) == 'Q') {
+				String quarter = time.substring(4);
+				//System.out.println(quarter);
+				time = time.substring(0, 4);
+				if (quarter.equals("Q1")) {
+					time += "-03-31";
+				} else if (quarter.equals("Q2")) {
+					time += "-06-30";
+				} else if (quarter.equals("Q3")) {
+					time += "-09-30";							
+				} else if (quarter.equals("Q4")) {
+					time += "-12-31";
+				}
+			}
+		}
+		
+		return time;
 	}
 }

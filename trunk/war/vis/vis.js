@@ -1,93 +1,50 @@
-/**
- * Main runner method.
- */
-$(document).ready(function() {
-	/*
-	var url = document.URL;
-	var query = url.substring(url.indexOf("=")+1);
-	query = unescape(query);
-	query = query.replace(/\+/g," ");
-	*/
+// Main runner method
+$(document).ready(
+    function() {
 	var query = $("#query").clone();
 	load(htmldecode(query));
-	/*
-	query = query.replace(/\</g, "&lt;");
-	query = query.replace(/\>/g, "&gt;");
-	$("#query").html(query);	  	 	
-	*/
-});
+    }
+);
 
-function htmldecode(value){ 
-  return $('<div/>').html(value).text(); 
-}
-
-jQuery.ajaxSetup({
-  beforeSend: function() {
-	    $('#progress').show();
-  },
-  complete: function() {
-	    $('#progress').hide();
-  },
-  error: function() {   
-	    $("#error").html("Error looking up results. Might be because of GAE timeout. Try again in a bit.");
-  },
-  success: function() {}
-});
-
-/**
- * Pool for Time Parser Namespaces
- */
-var TimeConfigPool = { 
-	"http://estatwrap.ontologycentral.com/dic/time#" : {
-			parser : "http://estatwrap.ontologycentral.com/dic/time#%Y" 
-			}, 
-	"http://ontologycentral.com/2009/01/eurostat/time#" : {
-			parser : "http://ontologycentral.com/2009/01/eurostat/time#%Ym%m" 
-			}
-	 };
-  
-/**
- * Content loader
- */
-function load( /*String*/ querystring){
-    var request = { accept : "application/sparql-results+json"};
-	
-    request.query = querystring;
-
-    /*
-    $.getJSON("http://q.ontologycentral.com/sparql", request, 
-	      function(data){				
-		  visualiseResults(data);		
-	      }
-	);
-    */
+// Content loader
+function load(querystring) {
+    var request = { 
+	query : querystring
+    };
     
-    $.getJSON("http://qcrumb.com/sparql", request, 
-	      function(data){				
-		  visualiseResults(data);		
-	      }
-	);
+    $.ajax(
+	{
+	    url: "http://qcrumb.com/sparql",
+	    data: request, 
+	    success : function(data) {				
+		  renderResults(data);		
+	      },
+	    dataType: "json",
+	    headers: {
+		Accept: 'application/sparql-results+json'
+	    },
+	    beforeSend: function() {
+		$('#progress').show();
+	    },
+	    complete: function() {
+		$('#progress').hide();
+	    },
+	    error: function() {   
+		$("#error").html("Error looking up results. Might be because of a timeout. Try again in a bit.");
+	    }
+	}
+    );
 }
 
-/**
- * Sort function for the time values
- */
-function yearSort(a, b) {
-	return a.time.value.getTime() - b.time.value.getTime();
-}
-
-/**
- * Dimensions of the visualization graph
- */
+// Dimensions of the visualisation graph
 var xFreiraum = 350, yFreiraum = 100;
 var schaubildHoehe = 300, schaubildBreite = 600;	
 var height = yFreiraum + schaubildHoehe;
 var width = xFreiraum + schaubildBreite;
 
-/**
- * Main visualization method using Protovis
- */
-function visualiseResults(/* JSON */ data){ 
+
+// Main visualisation method using Protovis
+function renderResults(data) { 
     // Assignment of the xAxis, yAxis and Label variables according to the specefications.
     // Other variables mustn't appear in the query. 
     try {
@@ -104,7 +61,7 @@ function visualiseResults(/* JSON */ data){
     } catch (e) {
 	$('#progress').hide();
 	$("#error").html("Loading data failed." + " " + e);
-    }		
+    }	
 
     try {
 	var time = bindings[0][xlabel].value;
@@ -113,30 +70,14 @@ function visualiseResults(/* JSON */ data){
 	$("#error").html("Your query does not contain any bindings. Plese verify your query." + " " + e);
     }
 
-    // Choosing the right parser
-    var index = time.indexOf("#");
-    var timeNS = time.substring(0, index + 1);
-    var TimeConfig = TimeConfigPool[timeNS];
-	
     // Date parsing
-    var dateFormat = pv.Format.date(TimeConfig.parser);	  
-    bindings.forEach(function(d) {return d[xlabel].value = dateFormat.parse(d[xlabel].value); });
+    bindings.forEach(function(d) {return d[xlabel].value = Date.parse(d[xlabel].value); });
 
     // Nested Array according to the different labels. If the label variable does not exist the key has the value "undefined".
     if (label != "undefined") {
-	var nestedArray = pv.nest(data.results.bindings).key(function(d) { return d[label].value ; }).sortValues(yearSort).entries();
+	var nestedArray = pv.nest(data.results.bindings).key(function(d) { return d[label].value ; }).sortValues(dateSort).entries();
     } else {
-	var nestedArray = pv.nest(data.results.bindings).key(function() { return label ; }).sortValues(yearSort).entries();
-    }
-    // Protovis 3.2 Number Formatting
-    //var numberFormat = pv.Format.number(1);  // verändert irgendwas, muss noch untersucht werden. 
-    //bindings.forEach(function(d) d[yAxis].value = numberFormat.parse(d[yAxis].value));
-
-    // Delete non numerical values in the yAxis values. Scheint nich immer zu funktionieren (teicp000, nochmal überprüfen)
-    for(var i in nestedArray){
-	for(var j in nestedArray[i].values){	
-	    nestedArray[i].values[j][ylabel].value = deleteNonNumerical(nestedArray[i].values[j][ylabel].value); 		
-	}
+	var nestedArray = pv.nest(data.results.bindings).key(function() { return label ; }).sortValues(dateSort).entries();
     }
 					
     // Protovis 3.2 linear scales
@@ -184,61 +125,57 @@ function visualiseResults(/* JSON */ data){
 	.text(y.tickFormat);
     
     // A panel for each label entry
-    var panel = vis.add(pv.Panel)
-	.data(nestedArray)
+    var panel = vis.add(pv.Panel).data(nestedArray)
 	
-	// A line for each label entry	  
+    // A line for each label entry	  
     panel.add(pv.Line)
 	.data(function(d) { return d.values; } )
-	.strokeStyle(function(d){
-		if( label != "undefined"){
-		    return c(d[label].value);
-		}
-		else{
-		    return c(label);	
-			}
-		})
-		.left(function(d) { return x(d[xlabel].value); } )	
-		.bottom(function(d) { return y(d[ylabel].value); } ) 
+	.strokeStyle(function(d) {
+			 if( label != "undefined"){
+			     return c(d[label].value);
+			 } else {
+			     return c(label);	
+			 }
+		     })
+	.left(function(d) { return x(d[xlabel].value); } )	
+	.bottom(function(d) { return y(d[ylabel].value); } ) 
 			
-	// Cutline if multible label exist	
-	if(label != "undefined"){		
-		panel.add(pv.Dot)
-			.left(schaubildBreite+70) // x-Position of the cutline
-			.top(function() { return (this.parent.index-3.3) * 12; } ) // y-Position of the cutline
-			.fillStyle(function(d) { return c(d.key); } )
-			.strokeStyle(null)
-			.anchor("right").add(pv.Label)
-			.text(function(d) { return d.key; } );
-	}
+    // Cutline if multible label exist	
+    if (label != "undefined"){		
+	panel.add(pv.Dot)
+	    .left(schaubildBreite+70) // x-Position of the cutline
+	    .top(function() { return (this.parent.index-3.3) * 12; } ) // y-Position of the cutline
+	    .fillStyle(function(d) { return c(d.key); } )
+	    .strokeStyle(null)
+	    .anchor("right").add(pv.Label)
+	    .text(function(d) { return d.key; } );
+    }
 	
-	// XAxis labeling	
-	vis.add(pv.Label)
-		.left(schaubildBreite-20)
-		.top(schaubildHoehe+35)
-		.text(xlabel)
-		.font(14);
+    // XAxis labeling	
+    vis.add(pv.Label)
+	.left(schaubildBreite-20)
+	.top(schaubildHoehe+35)
+	.text(xlabel)
+	.font(14);
 		
-	// YAxis labeling
-	vis.add(pv.Label)
-		.left(-35)
-		.top(10)
-		.text(ylabel)
-		.font(20)
-		.textAngle(-Math.PI / 2);
+    // YAxis labeling
+    vis.add(pv.Label)
+	.left(-35)
+	.top(10)
+	.text(ylabel)
+	.font(20)
+	.textAngle(-Math.PI / 2);
 	
-	// Rendering. Central protovis method.	
-	vis.render();	
-
+    // Rendering. Central protovis method.	
+    vis.render();
 }
 
-/**
- *  Deletes non numerical characters in a String // nochmal überprüfen
- */
-function deleteNonNumerical(pstrSource) { 
-var m_strOut = new String(pstrSource); 
-    m_strOut = m_strOut.replace(/[^0-9\.]/g, ''); 
-
-    return m_strOut; 
+// urldecode string
+function htmldecode(value) { 
+    return $('<div/>').html(value).text(); 
 }
 
+//  Sort function for time values
+function dateSort(a, b) {
+    return a.time.value.getTime() - b.time.value.getTime();
+}
