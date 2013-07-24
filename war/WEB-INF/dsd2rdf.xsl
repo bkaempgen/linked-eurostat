@@ -3,14 +3,14 @@
 <xsl:stylesheet
    xmlns:xsl='http://www.w3.org/1999/XSL/Transform'
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:dc="http://purl.org/dc/terms/"
+   xmlns:dcterms="http://purl.org/dc/terms/"
    xmlns:ical="http://www.w3.org/2002/12/cal/ical#"
    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
    xmlns:gaap="http://edgarwrap.ontologycentral.com/vocab/us-gaap#"
    xmlns:sdmx-measure="http://purl.org/linked-data/sdmx/2009/measure#"
    xmlns:qb="http://purl.org/linked-data/cube#"
    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
-
+   xmlns:foaf="http://xmlns.com/foaf/0.1/"
    xmlns:sdmx="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/message"
    xmlns:common="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/common"
    xmlns:compact="http://www.SDMX.org/resources/SDMXML/schemas/v2_0/compact"
@@ -25,11 +25,15 @@
 
   <xsl:output method='xml' encoding='utf-8'/>
 
+  <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz'" />
+  <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ'" />
+
   <xsl:template match='sdmx:Structure'>
     <rdf:RDF>
       <rdf:Description rdf:about="">
 	<rdfs:comment>No guarantee of correctness! USE AT YOUR OWN RISK!</rdfs:comment>
-	<dc:publisher>Eurostat (http://epp.eurostat.ec.europa.eu/) via Linked Eurostat (http://estatwrap.ontologycentral.com/)</dc:publisher>
+	<dcterms:publisher>Eurostat (http://epp.eurostat.ec.europa.eu/) via Linked Eurostat (http://estatwrap.ontologycentral.com/)</dcterms:publisher>
+	<foaf:topic rdf:resource="#dsd"/>
       </rdf:Description>
 
       <!--
@@ -41,11 +45,30 @@
 	-->
 
       <qb:DataStructureDefinition rdf:about="#dsd">
+	<foaf:page rdf:resource=""/>
 	<qb:component>
 	  <rdf:Description>
 	    <qb:measure>
 	      <rdfs:Property rdf:about="http://purl.org/linked-data/sdmx/2009/measure#obsValue"/>
 	    </qb:measure>
+	  </rdf:Description>
+	</qb:component>
+	<qb:component>
+	  <rdf:Description>
+	    <qb:dimension>
+	      <rdfs:Property rdf:about="http://purl.org/dc/terms/date">
+		<rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+	      </rdfs:Property>
+	    </qb:dimension>
+	  </rdf:Description>
+	</qb:component>
+	<qb:component>
+	  <rdf:Description>
+	    <qb:dimension>
+	      <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#geo">
+		<rdfs:range rdf:resource="http://rdfdata.eionet.europa.eu/ramon/ontology/NUTSRegion"/>
+	      </rdfs:Property>
+	    </qb:dimension>
 	  </rdf:Description>
 	</qb:component>
 
@@ -57,29 +80,37 @@
 		  <qb:attribute>
 		    <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#obs_status">
 		      <qb:codeList>
-			<xsl:attribute name="rdf:resource">#<xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
 		      </qb:codeList>
 		    </rdfs:Property>
 		  </qb:attribute>
 		</xsl:when>
 		<xsl:when test="@id = 'CL_FREQ'">
-		  <!-- @@@missing -->
-		</xsl:when>
-		<xsl:when test="@id = 'CL_TIME_FORMAT'">
 		  <qb:dimension>
-		    <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#time">
+		    <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#freq">
 		      <qb:codeList>
-			<xsl:attribute name="rdf:resource">#<xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
 		      </qb:codeList>
 		    </rdfs:Property>
 		  </qb:dimension>
 		</xsl:when>
+		<xsl:when test="@id = 'CL_TIME_FORMAT'">
+		  <qb:dimension>
+		    <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#timeformat">
+		      <qb:codeList>
+			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
+		      </qb:codeList>
+		    </rdfs:Property>
+		  </qb:dimension>
+		</xsl:when>
+		<xsl:when test="@id = 'CL_GEO'">
+		</xsl:when>
 		<xsl:otherwise>
 		  <qb:dimension>
 		    <rdfs:Property>
-		      <xsl:attribute name="rdf:about">http://ontologycentral.com/2009/01/eurostat/ns#<xsl:value-of select="substring(@id, 4)"/></xsl:attribute>
+		      <xsl:attribute name="rdf:about">http://ontologycentral.com/2009/01/eurostat/ns#<xsl:value-of select="substring(translate(@id, $uppercase, $lowercase), 4)"/></xsl:attribute>
 		      <qb:codeList>
-			<xsl:attribute name="rdf:resource">#<xsl:value-of select="@id"/></xsl:attribute>
+			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
 		      </qb:codeList>
 		    </rdfs:Property>
 		  </qb:dimension>
@@ -101,11 +132,11 @@
   </xsl:template>
 
   <xsl:template match='sdmx:ID'>
-    <dc:identifier><xsl:value-of select="."/></dc:identifier>
+    <dcterms:identifier><xsl:value-of select="."/></dcterms:identifier>
   </xsl:template>
 
   <xsl:template match='sdmx:Prepared'>
-    <dc:date><xsl:value-of select="."/></dc:date>
+    <dcterms:date><xsl:value-of select="."/></dcterms:date>
   </xsl:template>
 
   <xsl:template match='sdmx:CodeLists'>
@@ -113,11 +144,13 @@
   </xsl:template>
 
   <xsl:template match='structure:CodeList'>
-    <skos:ConceptScheme>
-      <xsl:attribute name="rdf:about">#<xsl:value-of select="@id"/></xsl:attribute>
-      <skos:notation><xsl:value-of select="@id"/></skos:notation>
-      <xsl:apply-templates/>
-    </skos:ConceptScheme>
+    <xsl:if test="@id != 'CL_GEO'">
+      <skos:ConceptScheme>
+	<xsl:attribute name="rdf:about">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
+	<skos:notation><xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></skos:notation>
+	<xsl:apply-templates/>
+      </skos:ConceptScheme>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match='structure:Name|structure:Description'>
@@ -130,14 +163,15 @@
   <xsl:template match='structure:Code'>
     <skos:hasTopConcept>
       <skos:Concept>
-	<xsl:choose>
-	  <xsl:when test="../@id='CL_geo'">
-	    <xsl:attribute name="rdf:about">../dic/geo#<xsl:value-of select="@value"/></xsl:attribute>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:attribute name="rdf:about">../dic/<xsl:value-of select="substring(../@id, 4)"/>#<xsl:value-of select="@value"/></xsl:attribute>
-	  </xsl:otherwise>
-	</xsl:choose>
+	<!--
+	    <xsl:choose>
+	    <xsl:when test="../@id='CL_geo'">
+	    <xsl:attribute name="rdf:about">../dic/geo<xsl:value-of select="@value"/></xsl:attribute>
+	    </xsl:when>
+	    <xsl:otherwise>
+	-->
+	<xsl:attribute name="rdf:about">../dic/<xsl:value-of select="translate(substring(../@id, 4), $uppercase, $lowercase)"/>#<xsl:value-of select="@value"/></xsl:attribute>
+
 	<xsl:apply-templates/>
       </skos:Concept>
     </skos:hasTopConcept>

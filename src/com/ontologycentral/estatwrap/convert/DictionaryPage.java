@@ -3,12 +3,13 @@ package com.ontologycentral.estatwrap.convert;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 public class DictionaryPage {
-	public static void convert(XMLStreamWriter ch, String id, List<Reader> rs, String[] langs) throws XMLStreamException, IOException {
+	public static void convert(XMLStreamWriter ch, String id, List<Reader> rs, String[] langs, Set<String> nuts) throws XMLStreamException, IOException {
 		ch.writeStartDocument("utf-8", "1.0");
 
 		ch.writeStartElement("rdf:RDF");
@@ -17,6 +18,7 @@ public class DictionaryPage {
 		ch.writeNamespace("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
 		ch.writeNamespace("owl", "http://www.w3.org/2002/07/owl#");
 		ch.writeNamespace("foaf", "http://xmls.com/foaf/0.1/");
+		ch.writeNamespace("ramon", "http://rdfdata.eionet.europa.eu/ramon/ontology/");
 		ch.writeNamespace("skos", "http://www.w3.org/2004/02/skos/core#");
 		
 		ch.writeStartElement("rdf:Description");
@@ -42,13 +44,13 @@ public class DictionaryPage {
         	String lang = langs[i];
         	
         	if ("geo".equals(id)) {
-        		d = new DictionaryGeo(r);
+        		d = new DictionaryGeo(r, id, nuts);
         	} else if ("unit".equals(id)) {
-        		d = new DictionaryUnits(r);
-        	} else if ("nace".equals(id)) {
-        		d = new DictionaryNace(r);
+        		d = new DictionaryUnits(r, id);
+        	} else if ("nace_r2".equals(id)) {
+        		d = new DictionaryNace(r, id);
         	} else {
-        		d = new Dictionary(r);            	
+        		d = new Dictionary(r, id);            	
         	}
 
         	d.convert(ch, lang);

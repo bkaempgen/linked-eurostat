@@ -16,8 +16,8 @@ public class DictionaryUnits extends Dictionary {
 
 	Map<String, String> _map;
 	
-	public DictionaryUnits(Reader is) throws IOException {
-		super(is);
+	public DictionaryUnits(Reader is, String file) throws IOException {
+		super(is, file);
 		_map = new HashMap<String, String>();
 		
 		_map.put("1000", "Thousand");
@@ -37,6 +37,8 @@ public class DictionaryUnits extends Dictionary {
 	}
 
 	public void addMappings(XMLStreamWriter out, String id) throws IOException, XMLStreamException {
+		super.addMappings(out, id);
+
 		if (_map.containsKey(id)) {
 			out.writeStartElement("owl:sameAs");
 			out.writeAttribute("rdf:resource", "http://dbpedia.org/resource/" + id);				

@@ -8,17 +8,16 @@
     <h1>Visualisation</h1>
 	
     <p>
-      Here you can visualise Eurostat data.
-      
-  	</p>
+      Here you can visualise Eurostat data.  
+    </p>
   	
-  	<p>
+    <p>
       You have to specify a <a href="http://en.wikipedia.org/wiki/Sparql">SPARQL</a> query with FROM/FROM NAMED clauses.
-	 The query has to return variables <code>?time ?value ?geo</code>.
-	 Query results are then visualised via <a href="http://vis.stanford.edu/protovis/">ProtoVis</a>.
+      The query has to return variables <code>?time ?value ?geo</code>.
+      Query results are then visualised via <a href="http://vis.stanford.edu/protovis/">ProtoVis</a>.
     </p>
 	
-    <form action='timeline.html' accept-charset="utf-8" method='get' name='qform'>
+    <form action='timeline' accept-charset="utf-8" method='post' name='qform'>
       <div>
       <textarea cols="120" rows="25" name='query'>PREFIX  sdmx-measure: &lt;http://purl.org/linked-data/sdmx/2009/measure#&gt;
 PREFIX  eus:  &lt;http://ontologycentral.com/2009/01/eurostat/ns#&gt;

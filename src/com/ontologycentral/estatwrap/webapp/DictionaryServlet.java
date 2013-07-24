@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.cache.Cache;
@@ -32,7 +33,7 @@ import com.ontologycentral.estatwrap.convert.DictionaryPage;
 public class DictionaryServlet extends HttpServlet {
 	Logger _log = Logger.getLogger(this.getClass().getName());
 
-	public static String[] LANG = { "en", "de", "fr" } ;
+	public static String[] LANG = { "en" } ; //, "de", "fr" } ;
 
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		if (req.getServerName().contains("estatwrap.appspot.com")) {
@@ -120,7 +121,7 @@ public class DictionaryServlet extends HttpServlet {
 			c.add(Calendar.DATE, 1);
 			resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
 
-			DictionaryPage.convert(ch, id, rli, LANG);
+			DictionaryPage.convert(ch, id, rli, LANG, (Set<String>)ctx.getAttribute(Listener.NUTS));
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 			resp.sendError(500, e.getMessage());

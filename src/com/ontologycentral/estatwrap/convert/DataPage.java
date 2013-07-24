@@ -16,6 +16,7 @@ public class DataPage {
 
 		ch.writeStartElement("rdf:RDF");
 		ch.writeDefaultNamespace(Data.PREFIX);
+		ch.writeAttribute("xml:base", "http://estatwrap.ontologycentral.com/");
 		ch.writeNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 		ch.writeNamespace("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
 		ch.writeNamespace("foaf", "http://xmls.com/foaf/0.1/");
@@ -25,9 +26,27 @@ public class DataPage {
 		
 		ch.writeStartElement("rdf:Description");
 		ch.writeAttribute("rdf:about", "");
-		ch.writeStartElement("foaf:maker");
-		ch.writeAttribute("rdf:resource", "http://harth.org/andreas/foaf#ah");
+		
+		ch.writeStartElement("rdfs:comment");
+		ch.writeCharacters("No guarantee of correctness! USE AT YOUR OWN RISK!");
 		ch.writeEndElement();
+		
+		ch.writeStartElement("dcterms:publisher");
+		ch.writeCharacters("Eurostat (http://epp.eurostat.ec.europa.eu/) via Linked Eurostat (http://estatwrap.ontologycentral.com/)");
+		ch.writeEndElement();
+
+		ch.writeStartElement("rdfs:seeAlso");
+		ch.writeAttribute("rdf:resource", "http://estatwrap.ontologycentral.com/table_of_contents.rdf");
+		ch.writeEndElement();		
+
+		ch.writeStartElement("foaf:maker");
+		ch.writeAttribute("rdf:resource", "http://cbasewrap.ontologycentral.com/company/ontologycentral#id");
+		ch.writeEndElement();
+
+		ch.writeStartElement("foaf:topic");
+		ch.writeAttribute("rdf:resource", "#ds");
+		ch.writeEndElement();
+
 		Calendar cal = Calendar.getInstance();
 		ch.writeStartElement("dcterms:date");
 		ch.writeCharacters(Listener.ISO8601.format(cal.getTime()));
@@ -51,6 +70,10 @@ public class DataPage {
 		ch.writeStartElement("rdfs:seeAlso");
 		ch.writeAttribute("rdf:resource", "http://ontologycentral.com/2009/01/eurostat/");
 		ch.writeEndElement();
+		ch.writeStartElement("foaf:page");
+		ch.writeAttribute("rdf:resource", "");
+		ch.writeEndElement();
+
 
 		ch.writeStartElement("qb:structure");
 		ch.writeAttribute("rdf:resource", "../dsd/" + id + "#dsd");

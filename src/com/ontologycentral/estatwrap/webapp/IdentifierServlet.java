@@ -41,26 +41,26 @@ public class IdentifierServlet extends HttpServlet {
 
 		id = id.substring("/id/".length());
 		
-		ServletContext ctx = getServletContext();
-		
-		Map<String, String> toc = (Map<String, String>)ctx.getAttribute(Listener.TOC);
-		
+//		ServletContext ctx = getServletContext();
+				
 		String accept = req.getHeader("accept");
 		
-		if (toc.containsKey(id)) {
-			if (accept != null && accept.contains("application/rdf+xml")) {
-				//out.println(path + ".rdf");
-				resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
-				resp.setHeader("Location", "../data/" + id);
-				return;
-			} else {
-				//out.println(path + ".html");
-				resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
-				resp.setHeader("Location", "../page/" + id);
-				return;
-			}
+		// EXPENSIVE!
+//		Map<String, String> toc = (Map<String, String>)ctx.getAttribute(Listener.TOC);
+//		if (toc != null && !toc.containsKey(id)) {
+//			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+//			return;
+//		}
+		
+		if (accept != null && accept.contains("application/rdf+xml")) {
+			//out.println(path + ".rdf");
+			resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
+			resp.setHeader("Location", "../data/" + id);
+			return;
 		} else {
-			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+			//out.println(path + ".html");
+			resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
+			resp.setHeader("Location", "../page/" + id);
 			return;
 		}
 	}

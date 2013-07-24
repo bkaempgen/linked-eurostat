@@ -8,4 +8,10 @@
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
 	</system-properties>
 	
+    <static-files>
+        <include path="/vis/*.gif" expiration="1d" />
+        <include path="/vis/protovis-r3.2.js" expiration="30d" />
+        <include path="/vis/date.js" expiration="30d" />
+	      <include path="/**"/>
+    </static-files>
 </appengine-web-app>

@@ -55,6 +55,9 @@ public class DataServlet extends HttpServlet {
 
 		try {
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setConnectTimeout(8*1000);
+			conn.setReadTimeout(8*1000);
+			
 			InputStream is = new GZIPInputStream(conn.getInputStream());
 
 			if (conn.getResponseCode() != 200) {
