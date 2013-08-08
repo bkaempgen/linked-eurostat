@@ -1,0 +1,4 @@
+User-agent: User-Agent: AhrefsBot
+Crawl-Delay: 60
+Disallow: /dsd/
+Disallow: /data/
