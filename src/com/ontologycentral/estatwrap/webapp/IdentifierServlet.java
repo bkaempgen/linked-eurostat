@@ -55,12 +55,12 @@ public class IdentifierServlet extends HttpServlet {
 		if (accept != null && accept.contains("application/rdf+xml")) {
 			//out.println(path + ".rdf");
 			resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
-			resp.setHeader("Location", "../data/" + id);
+			resp.setHeader("Location", "/data/" + id);
 			return;
 		} else {
 			//out.println(path + ".html");
 			resp.setStatus(HttpServletResponse.SC_SEE_OTHER);
-			resp.setHeader("Location", "../page/" + id);
+			resp.setHeader("Location", "/page/" + id);
 			return;
 		}
 	}
