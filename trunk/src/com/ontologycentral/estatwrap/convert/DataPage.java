@@ -16,7 +16,9 @@ public class DataPage {
 
 		ch.writeStartElement("rdf:RDF");
 		ch.writeDefaultNamespace(Data.PREFIX);
-		ch.writeAttribute("xml:base", "http://estatwrap.ontologycentral.com/");
+		// Base "" more generic
+		//ch.writeAttribute("xml:base", "http://estatwrap.ontologycentral.com/");
+		ch.writeAttribute("xml:base", "");
 		ch.writeNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 		ch.writeNamespace("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
 		ch.writeNamespace("foaf", "http://xmls.com/foaf/0.1/");
@@ -76,7 +78,7 @@ public class DataPage {
 
 
 		ch.writeStartElement("qb:structure");
-		ch.writeAttribute("rdf:resource", "../dsd/" + id + "#dsd");
+		ch.writeAttribute("rdf:resource", "/dsd/" + id + "#dsd");
 		ch.writeEndElement();
 		
 		ch.writeEndElement();

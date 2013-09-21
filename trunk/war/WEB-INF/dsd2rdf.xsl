@@ -76,9 +76,10 @@
 	  <qb:component>
 	    <rdf:Description>
 	      <xsl:choose>
-		<xsl:when test="@id = 'CL_obs_status'">
+		<xsl:when test="@id = 'CL_OBS_STATUS'">
 		  <qb:attribute>
 		    <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#obs_status">
+		      <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
 		      <qb:codeList>
 			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
 		      </qb:codeList>
@@ -86,29 +87,33 @@
 		  </qb:attribute>
 		</xsl:when>
 		<xsl:when test="@id = 'CL_FREQ'">
-		  <qb:dimension>
+		  <qb:attribute>
 		    <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#freq">
+		      <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
 		      <qb:codeList>
 			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
 		      </qb:codeList>
 		    </rdfs:Property>
-		  </qb:dimension>
+		  </qb:attribute>
 		</xsl:when>
 		<xsl:when test="@id = 'CL_TIME_FORMAT'">
-		  <qb:dimension>
+		  <qb:attribute>
 		    <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#timeformat">
+		      <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
 		      <qb:codeList>
 			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
 		      </qb:codeList>
 		    </rdfs:Property>
-		  </qb:dimension>
+		  </qb:attribute>
 		</xsl:when>
 		<xsl:when test="@id = 'CL_GEO'">
+		<!-- Do nothing. -->
 		</xsl:when>
 		<xsl:otherwise>
 		  <qb:dimension>
 		    <rdfs:Property>
 		      <xsl:attribute name="rdf:about">http://ontologycentral.com/2009/01/eurostat/ns#<xsl:value-of select="substring(translate(@id, $uppercase, $lowercase), 4)"/></xsl:attribute>
+		      <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
 		      <qb:codeList>
 			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
 		      </qb:codeList>
