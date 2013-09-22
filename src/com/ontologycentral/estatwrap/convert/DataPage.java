@@ -60,6 +60,7 @@ public class DataPage {
 		ch.writeAttribute("rdf:about", "/id/" + id  + "#ds"); 
 		if (toc.containsKey(id)) {
 			ch.writeStartElement("rdfs:label");
+			ch.writeAttribute("xml:lang", "en");
 			ch.writeCharacters(toc.get(id));
 			ch.writeEndElement();
 		}

@@ -49,7 +49,9 @@
 	<qb:component>
 	  <rdf:Description>
 	    <qb:measure>
-	      <rdfs:Property rdf:about="http://purl.org/linked-data/sdmx/2009/measure#obsValue"/>
+	      <rdfs:Property rdf:about="http://purl.org/linked-data/sdmx/2009/measure#obsValue">
+	      <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#double"/>
+	      </rdfs:Property>
 	    </qb:measure>
 	  </rdf:Description>
 	</qb:component>
@@ -171,11 +173,12 @@
 	<!--
 	    <xsl:choose>
 	    <xsl:when test="../@id='CL_geo'">
-	    <xsl:attribute name="rdf:about">../dic/geo<xsl:value-of select="@value"/></xsl:attribute>
+	    <xsl:attribute name="rdf:about">/dic/geo<xsl:value-of select="@value"/></xsl:attribute>
 	    </xsl:when>
 	    <xsl:otherwise>
 	-->
-	<xsl:attribute name="rdf:about">../dic/<xsl:value-of select="translate(substring(../@id, 4), $uppercase, $lowercase)"/>#<xsl:value-of select="@value"/></xsl:attribute>
+	<xsl:attribute name="rdf:about">/dic/<xsl:value-of select="translate(substring(../@id, 4), $uppercase, $lowercase)"/>#<xsl:value-of select="@value"/></xsl:attribute>
+	<skos:inScheme><xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(../@id, $uppercase, $lowercase)"/></xsl:attribute></skos:inScheme>
 
 	<xsl:apply-templates/>
       </skos:Concept>

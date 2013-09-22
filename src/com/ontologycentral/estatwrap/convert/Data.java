@@ -141,13 +141,15 @@ public class Data {
     		out.writeStartElement("sdmx-measure:obsValue");
     		String val = (String)lcol.get(i);
     		String note = null;
+    		
+    		// Different encodings of values
     		if (val.indexOf(' ') > 0) {
     			note = val.substring(val.indexOf(' ')+1);
     			val = val.substring(0, val.indexOf(' '));
-    			out.writeAttribute("rdf:datatype", Dictionary.PREFIX + "note#" + note);
-    		}
-
-    		if (":".equals(val)) {
+    			// Datatype is double, always.
+    			//out.writeAttribute("rdf:datatype", Dictionary.PREFIX + "note#" + note);
+    			out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#double");
+    		} else if (val.equals(":")) {
     			val = "";
     		} else {
     			try {
@@ -156,6 +158,7 @@ public class Data {
     				_log.info("not a number " + val);
     				val = "";
     			}
+    			out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#double");
     		}
     		
 			out.writeCharacters(val);
