@@ -4,3 +4,7 @@ com.ontologycentral.estatwrap.webapp.GzipFilter is not existing (any more?).
 * why so complicated redirecting? Changed link of dsd "../dsd/tec00114#dsd" to "/dsd/tec00114#dsd" and in IdentifierServlet from "../" to "/".
 * had to create nuts.txt myself since it did not exist
 * For data, set base "", so that also debuggable on localhost.
+* Add English label
+* Aggregations cannot be calculated if measure does not get a range and measure
+values do not get a datatype, since default datatype is string.
+* For properly modelled codeList, I had to add every concept to the scheme via inScheme.
