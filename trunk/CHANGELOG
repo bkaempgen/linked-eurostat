@@ -1,3 +1,8 @@
+==2014-03-18==
+* Bugfix: Special value ":" should not be typed with double. In Data.java now properly checked.
+* Also, GAE would not allow Java 6, anymore. Thus, downloaded Java GAE 1.7.7 from http://code.google.com/p/googleappengine/downloads/detail?name=appengine-java-sdk-1.7.7.zip&can=1&q=
+** Was compatible to previous versions.
+
 ==2013-09-21==
 * Had to comment out Filter for Compress Gzip.Filter in web.xml, otherwise system would not run. Apparently, 
 com.ontologycentral.estatwrap.webapp.GzipFilter is not existing (any more?).
