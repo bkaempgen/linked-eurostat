@@ -148,7 +148,13 @@ public class Data {
     			val = val.substring(0, val.indexOf(' '));
     			// Datatype is double, always.
     			//out.writeAttribute("rdf:datatype", Dictionary.PREFIX + "note#" + note);
-    			out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#double");
+    			if (val.equals(":")) {
+    				val = "";
+    				out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#string");
+    			} else {
+    				out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#double");
+    			}
+    			
     		} else if (val.equals(":")) {
     			val = "";
     		} else {
