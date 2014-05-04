@@ -1,4 +1,11 @@
-User-agent: User-Agent: AhrefsBot
-Crawl-Delay: 60
+User-Agent: AhrefsBot
+Disallow: /dsd/
+Disallow: /data/
+
+User-Agent: Slurp
+Disallow: /dsd/
+Disallow: /data/
+
+User-agent: MJ12bot
 Disallow: /dsd/
 Disallow: /data/
