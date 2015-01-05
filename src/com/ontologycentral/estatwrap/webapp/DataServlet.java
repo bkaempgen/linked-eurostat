@@ -22,7 +22,6 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
-import com.ontologycentral.estatwrap.convert.Data;
 import com.ontologycentral.estatwrap.convert.DataPage;
 
 @SuppressWarnings("serial")
@@ -51,7 +50,7 @@ public class DataServlet extends HttpServlet {
 
 		ServletContext ctx = getServletContext();
 
-		URL url = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=data/" + id + ".tsv.gz");
+		URL url = new URL(Listener.URI_PREFIX + "?file=data/" + id + ".tsv.gz");
 
 		try {
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();

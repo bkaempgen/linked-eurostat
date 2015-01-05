@@ -70,7 +70,7 @@ public class DictionaryServlet extends HttpServlet {
 			for (String lang : LANG) {
 				StringReader sr = null;
 
-				URL url = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=dic/" + lang + "/" + id + ".dic");
+				URL url = new URL(Listener.URI_PREFIX + "?file=dic/" + lang + "/" + id + ".dic");
 				//URL url = new URL("http://europa.eu/estatref/download/everybody/dic/en/" + id + ".dic");
 
 				System.out.println("looking up " + url);
