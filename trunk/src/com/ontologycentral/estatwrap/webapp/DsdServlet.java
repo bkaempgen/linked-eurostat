@@ -32,9 +32,7 @@ public class DsdServlet extends HttpServlet {
 
 		ServletContext ctx = getServletContext();
 
-		String archive = "http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=data/" + id + ".sdmx.zip";
-
-		URL u = new URL(archive);
+		URL u = new URL(Listener.URI_PREFIX + "?file=data/" + id + ".sdmx.zip");
 
 		_log.info("retrieving " + u);
 		//System.out.println("retrieving " + _u);

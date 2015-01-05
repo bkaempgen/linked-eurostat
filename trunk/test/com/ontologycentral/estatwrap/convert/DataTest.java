@@ -2,7 +2,6 @@ package com.ontologycentral.estatwrap.convert;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
@@ -12,11 +11,13 @@ import javax.xml.stream.XMLStreamWriter;
 
 import junit.framework.TestCase;
 
+import com.ontologycentral.estatwrap.webapp.Listener;
+
 public class DataTest extends TestCase {
 	public void testData() throws Exception {
 		String id = "earn_ses_actrl";
 		
-		URL url = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=data/" + id + ".tsv.gz");
+		URL url = new URL(Listener.URI_PREFIX + "?file=data/" + id + ".tsv.gz");
 		//URL url = new URL("http://europa.eu/estatref/download/everybody/data/" + id + ".tsv.gz");
         
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -49,7 +50,7 @@ public class DataTest extends TestCase {
 		ch.writeEndElement();
 		ch.writeEndElement();
 		
-        d.convert(ch);
+        d.convert(ch, id);
         
         ch.writeEndElement();
         ch.writeEndDocument();

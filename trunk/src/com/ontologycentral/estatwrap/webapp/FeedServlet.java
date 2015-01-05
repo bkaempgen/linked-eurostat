@@ -58,7 +58,7 @@ public class FeedServlet extends HttpServlet {
 		
 		Map<String, String> toc = (Map<String, String>)ctx.getAttribute(Listener.TOC);
 
-		URL url = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?sort=1&file=table_of_contents_en.txt");
+		URL url = new URL(Listener.URI_PREFIX + "?file=table_of_contents_en.txt");
 			
 		try {
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();

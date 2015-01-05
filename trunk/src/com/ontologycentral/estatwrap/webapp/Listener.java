@@ -34,6 +34,8 @@ import com.ontologycentral.estatwrap.convert.ToC;
 
 public class Listener implements ServletContextListener {
 	Logger _log = Logger.getLogger(this.getClass().getName());
+	
+	public static String URI_PREFIX = "http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing";
 
 	public static SimpleDateFormat RFC822 = new SimpleDateFormat("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US);
 	public static SimpleDateFormat ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
@@ -90,8 +92,8 @@ public class Listener implements ServletContextListener {
 
 	    if (map == null) {
 	    	try {
-	    		URL u = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?sort=1&file=table_of_contents_en.txt");
-
+	    		//URL u = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?sort=1&file=table_of_contents_en.txt");
+	    		URL u = new URL(URI_PREFIX + "?file=table_of_contents_en.txt");
 	    		HttpURLConnection conn = (HttpURLConnection)u.openConnection();
 	    		InputStream is = conn.getInputStream();
 

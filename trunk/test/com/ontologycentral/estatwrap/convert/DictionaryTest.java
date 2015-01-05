@@ -11,11 +11,13 @@ import javax.xml.stream.XMLStreamWriter;
 
 import junit.framework.TestCase;
 
+import com.ontologycentral.estatwrap.webapp.Listener;
+
 public class DictionaryTest extends TestCase {
 	public void testData() throws Exception {
 		String id = "geo";
 		
-		URL url = new URL("http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=dic/en/" + id + ".dic");
+		URL url = new URL(Listener.URI_PREFIX + "?file=dic/en/" + id + ".dic");
 		//URL url = new URL("http://europa.eu/estatref/download/everybody/data/" + id + ".tsv.gz");
         
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -26,7 +28,7 @@ public class DictionaryTest extends TestCase {
 //		c.add(Calendar.DATE, 1);
 //		resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
 
-        Dictionary d = new Dictionary(new InputStreamReader(is, "ISO-8859-1"));
+        Dictionary d = new Dictionary(new InputStreamReader(is, "ISO-8859-1"), id);
         
         XMLOutputFactory factory = XMLOutputFactory.newInstance();
 
@@ -48,7 +50,7 @@ public class DictionaryTest extends TestCase {
 		ch.writeEndElement();
 		ch.writeEndElement();
 		
-        d.convert(ch);
+        d.convert(ch, id);
         
         ch.writeEndElement();
         ch.writeEndDocument();
