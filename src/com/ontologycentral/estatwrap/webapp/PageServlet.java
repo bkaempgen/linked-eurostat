@@ -249,14 +249,14 @@ public class PageServlet extends HttpServlet {
 			ch.writeCharacters(" and ");
 
 			ch.writeStartElement("a");
-			ch.writeAttribute("href", "http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=data/" + id + ".tsv.gz");
+			ch.writeAttribute("href", Listener.URI_PREFIX + "?file=data/" + id + ".tsv.gz");
 			ch.writeCharacters("TSV (for Excel)");
 			ch.writeEndElement();	
 
 			ch.writeCharacters(" and ");
 
 			ch.writeStartElement("a");
-			ch.writeAttribute("href", "http://epp.eurostat.ec.europa.eu/NavTree_prod/everybody/BulkDownloadListing?file=data/" + id + ".sdmx.zip");
+			ch.writeAttribute("href", Listener.URI_PREFIX + "?file=data/" + id + ".sdmx.zip");
 			ch.writeCharacters("SDMX");
 			ch.writeEndElement();	
 
