@@ -32,6 +32,53 @@ public class DsdServlet extends HttpServlet {
 
 		ServletContext ctx = getServletContext();
 
+//		// Test........
+//		// TODO Auto-generated method stub
+//		URL u1 = new URL("http://www.aifb.kit.edu/web/Benedikt_K%C3%A4mpgen");
+//		//URL u1 = new URL("http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing");
+//		//URL u1 = new URL("http://ec.europa.eu/eurostat");
+//		
+//		//System.out.println("retrieving " + _u);
+//
+//		try {
+//			HttpURLConnection conn = (HttpURLConnection)u1.openConnection();
+//			
+//			//conn.setRequestMethod("GET");
+//			//conn.setRequestProperty("Accept-Encoding", "gzip");
+//			
+//			conn.setConnectTimeout(800*1000);
+//			conn.setReadTimeout(800*1000);
+//
+//			if (conn.getResponseCode() != 200) {
+//				throw new RuntimeException("lookup on " + u1 + " resulted HTTP in status code " + conn.getResponseCode());
+//			}
+//			
+//			System.out.println("Sucessful?");
+//
+//			InputStream is = conn.getInputStream();
+//
+//			String encoding = conn.getContentEncoding();
+//			if (encoding == null) {
+//				encoding = "ISO-8859-1";
+//			}
+//
+//			ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
+//
+//			ZipEntry ze;
+//			while((ze = zis.getNextEntry()) != null) {
+//				if (ze.getName().contains("dsd.xml") ) {
+//					break;
+//				}
+//			}
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		System.out.println("Sucessful!");
+//		//Test ..........
+		
 		URL u = new URL(Listener.URI_PREFIX + "?file=data/" + id + ".sdmx.zip");
 
 		_log.info("retrieving " + u);
@@ -39,14 +86,18 @@ public class DsdServlet extends HttpServlet {
 
 		try {
 			HttpURLConnection conn = (HttpURLConnection)u.openConnection();
+
+			conn.setRequestProperty("User-agent", "notjava");
 			conn.setConnectTimeout(8*1000);
 			conn.setReadTimeout(8*1000);
 
+			InputStream is = conn.getInputStream();
+
 			if (conn.getResponseCode() != 200) {
+				System.out.println("msg" + conn.getResponseMessage());
+				System.out.println("content:"+convertStreamToString(is));
 				throw new RuntimeException("lookup on " + u + " resulted HTTP in status code " + conn.getResponseCode());
 			}
-
-			InputStream is = conn.getInputStream();
 
 			String encoding = conn.getContentEncoding();
 			if (encoding == null) {
@@ -105,5 +156,10 @@ public class DsdServlet extends HttpServlet {
 		}
 
 		os.close();
+	}
+	
+	static String convertStreamToString(java.io.InputStream is) {
+	    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+	    return s.hasNext() ? s.next() : "";
 	}
 }
