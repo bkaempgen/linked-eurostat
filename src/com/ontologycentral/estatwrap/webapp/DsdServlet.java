@@ -87,6 +87,7 @@ public class DsdServlet extends HttpServlet {
 		try {
 			HttpURLConnection conn = (HttpURLConnection)u.openConnection();
 
+			// Bugfix since user agent java is blocked by Eurostat.
 			conn.setRequestProperty("User-agent", "notjava");
 			conn.setConnectTimeout(8*1000);
 			conn.setReadTimeout(8*1000);
