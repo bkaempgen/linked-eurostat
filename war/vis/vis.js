@@ -14,7 +14,7 @@ function load(querystring) {
     
     $.ajax(
 	{
-	    url: "http://qcrumb.com/sparql",
+	    url: "http://ontologycentral.com/sparql",
 	    data: request, 
 	    success : function(data) {				
 		  renderResults(data);		
@@ -45,17 +45,17 @@ var width = xFreiraum + schaubildBreite;
 
 // Main visualisation method using Protovis
 function renderResults(data) { 
-    // Assignment of the xAxis, yAxis and Label variables according to the specefications.
+    // Assignment of the xAxis, yAxis and Label variables according to the specifications.
     // Other variables mustn't appear in the query. 
     try {
-	const xlabel = data.head.vars[0];
-	const ylabel = data.head.vars[1];
+	var xlabel = data.head.vars[0];
+	var ylabel = data.head.vars[1];
 	if (data.head.vars[2] != null) {
 	    var label = data.head.vars[2];
 	} else {
 	    label = "undefined";	
-	}		
-		
+	}
+	//alert(xlabel);
 	// Bindings of the data
 	var bindings = data.results.bindings; 
     } catch (e) {
@@ -63,12 +63,13 @@ function renderResults(data) {
 	$("#error").html("Loading data failed." + " " + e);
     }	
 
+    /*
     try {
 	var time = bindings[0][xlabel].value;
     } catch(e) {
 	$('#progress').hide();
-	$("#error").html("Your query does not contain any bindings. Plese verify your query." + " " + e);
-    }
+	$("#error").html("Your query does not contain any bindings. Please verify your query." + " " + e);
+    }*/
 
     // Date parsing
     bindings.forEach(function(d) {return d[xlabel].value = Date.parse(d[xlabel].value); });

@@ -14,7 +14,7 @@ function loadDsd(querystring) {
     
     $.ajax( 
 	{
-	    url: "http://qcrumb.com/sparql", 
+	    url: "http://ontologycentral.com/sparql", 
 	    data : request, 
 	    success:  function(data) {
 		displayDsd(data);		

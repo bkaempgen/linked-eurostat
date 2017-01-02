@@ -6,6 +6,10 @@ User-Agent: Slurp
 Disallow: /dsd/
 Disallow: /data/
 
-User-agent: MJ12bot
+User-Agent: MJ12bot
+Disallow: /dsd/
+Disallow: /data/
+
+User-Agent: *
 Disallow: /dsd/
 Disallow: /data/

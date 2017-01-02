@@ -1,0 +1,5 @@
+
+
+$.getJSON("test.js", function(json) {
+   alert("JSON Data: " + json.users[3].name);
+ });

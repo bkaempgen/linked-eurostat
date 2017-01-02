@@ -115,11 +115,13 @@ public class DictionaryServlet extends HttpServlet {
 
 				rli.add(sr);
 			}
-			
-			resp.setHeader("Cache-Control", "public");
-			Calendar c = Calendar.getInstance();
-			c.add(Calendar.DATE, 1);
-			resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
+
+			// 1 day
+    		resp.setHeader("Cache-Control", "public,max-age=86400");
+//			resp.setHeader("Cache-Control", "public");
+//			Calendar c = Calendar.getInstance();
+//			c.add(Calendar.DATE, 1);
+//			resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
 
 			DictionaryPage.convert(ch, id, rli, LANG, (Set<String>)ctx.getAttribute(Listener.NUTS));
 		} catch (XMLStreamException e) {

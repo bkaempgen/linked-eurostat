@@ -21,7 +21,7 @@ public class DataPage {
 //		ch.writeAttribute("xml:base", "");
 		ch.writeNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 		ch.writeNamespace("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
-		ch.writeNamespace("foaf", "http://xmlns.com/foaf/0.1/");
+		ch.writeNamespace("foaf", "http://xmls.com/foaf/0.1/");
 		ch.writeNamespace("qb", "http://purl.org/linked-data/cube#");
 		ch.writeNamespace("sdmx-measure", "http://purl.org/linked-data/sdmx/2009/measure#");
 		ch.writeNamespace("dcterms", "http://purl.org/dc/terms/");

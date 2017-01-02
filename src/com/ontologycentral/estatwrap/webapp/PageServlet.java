@@ -44,11 +44,14 @@ public class PageServlet extends HttpServlet {
 
 		ServletContext ctx = getServletContext();
 
-		resp.setHeader("Cache-Control", "public");
-		Calendar c = Calendar.getInstance();
-		//c.add(Calendar.DATE, 1);
-		c.add(Calendar.HOUR, 2);
-		resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
+		// 2 h
+		resp.setHeader("Cache-Control", "public,max-age=7200");
+
+//		resp.setHeader("Cache-Control", "public");
+//		Calendar c = Calendar.getInstance();
+//		//c.add(Calendar.DATE, 1);
+//		c.add(Calendar.HOUR, 2);
+//		resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
 
 		XMLOutputFactory factory = (XMLOutputFactory)ctx.getAttribute(Listener.FACTORY);
     		
@@ -105,7 +108,7 @@ public class PageServlet extends HttpServlet {
 			
 			ch.writeEndElement();
 
-			String query = "PREFIX sdmx-measure: <http://purl.org/linked-data/sdmx/2009/measure#> PREFIX dcterms: <http://purl.org/dc/terms/> PREFIX eus: <http://ontologycentral.com/2009/01/eurostat/ns#> PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> PREFIX qb: <http://purl.org/linked-data/cube#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?time ?value ?geo FROM <http://estatwrap.ontologycentral.com/data/" + id + "> FROM <http://estatwrap.ontologycentral.com/dic/geo> WHERE { ?s qb:dataSet <http://estatwrap.ontologycentral.com/id/" + id + "#ds> . ?s dcterms:date ?time . ?s eus:geo ?g . ?g rdfs:label ?geo . ?s sdmx-measure:obsValue ?value . FILTER (lang(?geo) = \"en\") } ORDER BY ?geo";
+			String query = "PREFIX sdmx-measure: <http://purl.org/linked-data/sdmx/2009/measure#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\nPREFIX eus: <http://ontologycentral.com/2009/01/eurostat/ns#>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX qb: <http://purl.org/linked-data/cube#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\nSELECT ?time ?value ?geo\nFROM <http://estatwrap.ontologycentral.com/data/" + id + ">\nFROM <http://estatwrap.ontologycentral.com/dic/geo>\nWHERE {\n\t?s qb:dataSet <http://estatwrap.ontologycentral.com/id/" + id + "#ds> .\n\t?s dcterms:date ?time .\n\t?s eus:geo ?g .\n\t?g rdfs:label ?geo .\n\t?s sdmx-measure:obsValue ?value .\n\tFILTER (lang(?geo) = \"en\")\n}\nORDER BY ?geo";
 			//String query = "PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0APREFIX++rdfs%3A+<http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdic%2Fgeo>%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fg+.%0D%0A++++%3Fg+rdfs%3Alabel+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.+FILTER+(lang(%3Fgeo)+%3D+\"en\")+}+ORDER+BY+%3Fgeo";
 			
 			ch.writeStartElement("body");
@@ -128,16 +131,7 @@ public class PageServlet extends HttpServlet {
 			ch.writeStartElement("h2");
 			ch.writeCharacters("Visualisations");
 			ch.writeEndElement();
-			
-			ch.writeStartElement("div");
-			ch.writeStartElement("code");
-			ch.writeAttribute("id", "query");
-			//ch.writeCharacters(URLDecoder.decode("PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.%0D%0A}%0D%0A", "utf-8"));
-			ch.writeCharacters(query);
-			//"PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0APREFIX++rdfs%3A+<http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdic%2Fgeo>%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fg+.%0D%0A++++%3Fg+rdfs%3Alabel+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.%0D%0A}%0D%0A", "utf-8"));
-			ch.writeEndElement();
-			ch.writeEndElement();
-			
+		
 			ch.writeStartElement("h3");
 			ch.writeCharacters("Timeline");
 			ch.writeEndElement();
@@ -168,29 +162,82 @@ public class PageServlet extends HttpServlet {
 			ch.writeCharacters("Map visualisation (via Xi Bai)");
 			ch.writeEndElement();
 			ch.writeEndElement();
-			
+
 			ch.writeStartElement("h2");
+			ch.writeCharacters("SPARQL Queries");
+			ch.writeEndElement();
+
+			ch.writeStartElement("h3");
+			ch.writeCharacters("Observations");
+			ch.writeEndElement();
+
+			ch.writeStartElement("div");
+			
+			ch.writeStartElement("a");
+			ch.writeAttribute("href", "http://ontologycentral.com/sparql?query=" + URLEncoder.encode(query, "utf-8"));
+			//"PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0APREFIX++rdfs%3A+<http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdic%2Fgeo>%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fg+.%0D%0A++++%3Fg+rdfs%3Alabel+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.+FILTER+(lang(%3Fgeo)+%3D+\"en\")+}");
+			ch.writeCharacters("SPARQL results");
+			ch.writeEndElement();
+
+			ch.writeStartElement("pre");
+			ch.writeStartElement("code");
+//			ch.writeStartElement("form");
+//			ch.writeAttribute("method", "get");
+//			ch.writeAttribute("action", "http://ontologycentral.com/sparql");
+//			ch.writeAttribute("id", "queryform");
+//			ch.writeStartElement("textarea");
+//			ch.writeAttribute("name", "query");
+			ch.writeAttribute("id", "query");
+			ch.writeAttribute("rows", "20");
+			ch.writeAttribute("cols", "80");
+			//ch.writeCharacters(URLDecoder.decode("PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.%0D%0A}%0D%0A", "utf-8"));
+			ch.writeCharacters(query);
+			//"PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0APREFIX++rdfs%3A+<http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdic%2Fgeo>%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fg+.%0D%0A++++%3Fg+rdfs%3Alabel+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.%0D%0A}%0D%0A", "utf-8"));
+			ch.writeEndElement();
+//			ch.writeStartElement("input");
+//			ch.writeAttribute("type", "submit");
+//			ch.writeEndElement();
+			ch.writeEndElement();
+			
+			// div
+			ch.writeEndElement();
+
+			
+			ch.writeStartElement("h3");
 			ch.writeCharacters("Dimensions/Measures");
 			ch.writeEndElement();
 
 			ch.writeStartElement("div");
+			
+			String dsdquery = "PREFIX  qb: <http://purl.org/linked-data/cube#>\n" +
+					"SELECT *\n" +
+					"FROM <http://estatwrap.ontologycentral.com/dsd/"  + id + ">\n" +
+					"WHERE {\n" +
+					"\t{\n" +
+					"\t\t<http://estatwrap.ontologycentral.com/dsd/" + id + "#dsd> qb:component ?c .\n" +
+					"\t\t?c qb:measure ?m .\n" +
+					"\t} UNION {\n" +
+					"\t\t<http://estatwrap.ontologycentral.com/dsd/" + id + "#dsd> qb:component ?c .\n" +
+					"\t\t?c qb:dimension ?m .\n" +
+					"\t}\n" +
+					"}";
+
+			
+			ch.writeStartElement("a");
+			ch.writeAttribute("href", "http://ontologycentral.com/sparql?query=" + URLEncoder.encode(dsdquery, "utf-8"));
+			//"PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0APREFIX++rdfs%3A+<http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdic%2Fgeo>%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fg+.%0D%0A++++%3Fg+rdfs%3Alabel+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.+FILTER+(lang(%3Fgeo)+%3D+\"en\")+}");
+			ch.writeCharacters("SPARQL results");
+			ch.writeEndElement();
+
+			ch.writeStartElement("pre");
 			ch.writeStartElement("code");
 			ch.writeAttribute("id", "dsdquery");
-			
-			String dsdquery = "PREFIX  qb:   <http://purl.org/linked-data/cube#> " +
-				"SELECT * " +
-				"FROM <http://estatwrap.ontologycentral.com/dsd/"  + id + "> " +
-				"WHERE { " +
-				"  { " +
-				"    <http://estatwrap.ontologycentral.com/dsd/" + id + "#dsd> qb:component ?c . " +
-				"    ?c qb:measure ?m . " +
-				"  } UNION { " +
-				"    <http://estatwrap.ontologycentral.com/dsd/" + id + "#dsd> qb:component ?c . " +
-				"    ?c qb:dimension ?m . " +
-				"  } }";
-			
+						
 			ch.writeCharacters(dsdquery);
 			ch.writeEndElement();
+			ch.writeEndElement();
+
+			// div
 			ch.writeEndElement();
 			
 			ch.writeStartElement("div");
@@ -267,13 +314,7 @@ public class PageServlet extends HttpServlet {
 			ch.writeCharacters("Table");
 			ch.writeEndElement();	
 
-			ch.writeCharacters(" and ");
-
-			ch.writeStartElement("a");
-			ch.writeAttribute("href", "http://qcrumb.com/sparql?query=" + URLEncoder.encode(query, "utf-8"));
-			//"PREFIX++sdmx-measure%3A+<http%3A%2F%2Fpurl.org%2Flinked-data%2Fsdmx%2F2009%2Fmeasure%23>%0D%0APREFIX++eus%3A++<http%3A%2F%2Fontologycentral.com%2F2009%2F01%2Feurostat%2Fns%23>%0D%0APREFIX++rdf%3A++<http%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23>%0D%0APREFIX++qb%3A+++<http%3A%2F%2Fpurl.org%2Flinked-data%2Fcube%23>%0D%0APREFIX++rdfs%3A+<http%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23>%0D%0A%0D%0ASELECT++%3Ftime+%3Fvalue+%3Fgeo%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdata%2F" + id + ">%0D%0AFROM+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fdic%2Fgeo>%0D%0AWHERE+{%0D%0A++++%3Fs+qb%3Adataset+<http%3A%2F%2Festatwrap.ontologycentral.com%2Fid%2F" + id + "%23ds>+.%0D%0A++++%3Fs+eus%3Atime+%3Ftime+.%0D%0A++++%3Fs+eus%3Ageo+%3Fg+.%0D%0A++++%3Fg+rdfs%3Alabel+%3Fgeo+.%0D%0A++++%3Fs+sdmx-measure%3AobsValue+%3Fvalue+.+FILTER+(lang(%3Fgeo)+%3D+\"en\")+}");
-			ch.writeCharacters("SPARQL results");
-			ch.writeEndElement();
+//			ch.writeCharacters(" and ");
 
 			ch.writeEndElement();
 			

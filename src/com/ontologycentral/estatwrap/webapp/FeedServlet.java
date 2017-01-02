@@ -75,10 +75,13 @@ public class FeedServlet extends HttpServlet {
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(is, encoding));
 
-			resp.setHeader("Cache-Control", "public");
-			Calendar c = Calendar.getInstance();
-			c.add(Calendar.MINUTE, 10);
-			resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
+			// 10 min
+			resp.setHeader("Cache-Control", "public,max-age=600");
+
+//			resp.setHeader("Cache-Control", "public");
+//			Calendar c = Calendar.getInstance();
+//			c.add(Calendar.MINUTE, 10);
+//			resp.setHeader("Expires", Listener.RFC822.format(c.getTime()));
 			//resp.setHeader("Content-Encoding", "gzip");
 			
 			Map<String, Date> map = new HashMap<String, Date>();
