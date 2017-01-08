@@ -17,8 +17,9 @@ public class Data {
 	BufferedReader _in;
 	
 	// here, use a threshold to limit the amount of data converted (GAE limitations)
-	public static int MAX_COLS = 8;
-	public static int MAX_ROWS = 1024*8;
+	// added * 8 to remove restriction
+	public static int MAX_COLS = 8*10;
+	public static int MAX_ROWS = 1024*8*10;
 	
 	public Data(Reader sr) throws IOException {
 		_in = new BufferedReader(sr);
@@ -94,7 +95,7 @@ public class Data {
     		out.writeStartElement("rdf:Description");
     		out.writeAttribute("rdf:about", "");
     		out.writeStartElement("rdfs:comment");
-    		out.writeCharacters("ATTENTION: file is truncated due to processing time restrictions.");
+    		out.writeCharacters("ATTENTION: file may be truncated due to processing time restrictions.");
     		out.writeEndElement();
     		out.writeEndElement();
 		}

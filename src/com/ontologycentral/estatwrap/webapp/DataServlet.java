@@ -54,8 +54,12 @@ public class DataServlet extends HttpServlet {
 
 		try {
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-			conn.setConnectTimeout(8*1000);
-			conn.setReadTimeout(8*1000);
+			// here, use a threshold to limit the amount of data converted (GAE limitations)
+			//conn.setConnectTimeout(8*1000);
+			//conn.setReadTimeout(8*1000);
+			// Try maximum of 60 sec for HTTP request? Maybe 55sec
+			conn.setConnectTimeout(55*1000);
+			conn.setReadTimeout(55*1000);
 			
 			InputStream is = new GZIPInputStream(conn.getInputStream());
 
