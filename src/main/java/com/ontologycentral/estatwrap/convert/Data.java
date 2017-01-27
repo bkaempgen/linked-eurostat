@@ -172,13 +172,14 @@ public class Data {
 				}
 
 				out.writeCharacters(val);
+				out.writeEndElement();
+
+				// there's a note (most probably 'p' for provisional?)
 				if (note != null) {
 		    		out.writeStartElement("rdfs:comment");
 		    		out.writeCharacters(note);
 		    		out.writeEndElement();	
 				}
-
-				out.writeEndElement();
 			}
     		out.writeEndElement();
 		}
