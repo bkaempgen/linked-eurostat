@@ -19,11 +19,11 @@ $ mvn clean package war:war
 
 ## History
 
-# 2009
+### 2009
 * Andreas Harth created first version.
 
-# 2010 to 2014
+### 2010 to 2014
 * Research and innovation around PlanetData project (http://www.planet-data.eu/project-description + http://wiki.planet-data.eu/web/Main_Page)
 
-# 2015
+### 2015
 * Automatically exported from code.google.com/p/linked-eurostat
