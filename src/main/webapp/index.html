@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Eurostat Linked Data Wrapper</title>
+  </head>
+
+  <body>
+    <h1>Eurostat Linked Data Wrapper</h1>
+
+    <p>
+      Welcome to the EXPERIMENTAL <a href="http://epp.eurostat.ec.europa.eu/">Eurostat</a> wrapper to <a href="http://en.wikipedia.org/wiki/Linked_Data">Linked Data</a>.
+      The data is open and free (<a href="http://ec.europa.eu/eurostat/about/policies/copyright">Eurostat license policy</a>).
+    </p>
+
+    <p>
+      We provide a <a href="table_of_contents.html">table of contents</a> (also available: <a href="table_of_contents.rdf">table of contents as RDF</a>). <!-- and a <a href="feed.rdf">list of recently updated datasets</a>. -->
+    </p>
+	
+    <p>
+      Nearby: <a href="http://ontologycentral.com/2009/01/eurostat/">about the Eurostat wrapper</a>.
+    </p>
+    
+    <h2>Some Example Datasets</h2>
+    
+    <dl>
+      <dt><a href="/id/tec00114">/id/tec00114</a></dt>
+      <dd>GDP per capita in PPS</dd>
+      <dt><a href="/id/tec00115">/id/tec00115</a></dt>
+      <dd>Real GDP growth rate - volume</dd>
+      <dt><a href="/id/tps00001">/id/tps00001</a></dt>
+      <dd>Total population</dd>
+      <dt><a href="/id/tsdec450">/id/tsdec450</a></dt>
+      <dd>Unemployment rate, by sex</dd>
+      <dt><a href="./id/tespn020">/id/tespn020</a></dt>
+      <dd>Median relative income of elderly people (source: SILC)</dd>
+      <!--
+      <dt><a href="/id/tsdec420">/id/tsdec420</a></dt>
+      <dd>Employment rate, by sex</dd>
+      <dt><a href="/id/teicp000">/id/teicp000</a></dt>
+      <dd>Harmonized indices of consumer prices (HICP) - all items</dd>
+      -->
+      <dt><a href="/id/tec00118">/id/tec00118</a></dt>
+      <dd>Harmonized indices of consumer prices (HICP) - inflation rate</dd>
+    </dl>
+
+    <h2>Some Example Dictionaries</h2>
+
+    <dl>
+      <dt><a href="/dic/geo">/dic/geo</a></dt>
+      <dd>Geographical</dd>
+      <dt><a href="/dic/na_item">/dic/na_item</a></dt>
+      <dd>Na item?</dd>
+      <dt><a href="/dic/sex">/dic/sex</a></dt>
+      <dd>Sex</dd>
+      <dt><a href="/dic/unit">/dic/unit</a></dt>
+      <dd>Unit</dd>
+    </dl>
+    
+    <h2>News</h2>
+    
+    
+    <dl>
+      <dt>2017-01-27</dt>
+      <dd>
+	Minor fixes, project mavenised.
+      </dd>
+      <dt>2017-01-02</dt>
+      <dd>
+	Reduced truncation.
+      </dd>
+      <dt>2016-07-14</dt>
+      <dd>
+	Moved to updated SPARQL processing endpoint.
+	</dd>
+      <dt>2013-09-21</dt>
+      <dd>Adapted modeling closer towards <a href="http://www.w3.org/TR/vocab-data-cube/">RDF Data Cube specification</a></dd>
+    
+      <dt>2012-09-22</dt>
+      <dd>Updated TOC, changed links to statistics, links to eurostat.linked-statistics.org (forked from here) dictionary files</dd>
+
+      <dt>2011-10-20</dt>
+      <dd>Remove wrongly specified geo skos concepts</dd>
+
+      <dt>2011-09-02</dt>
+      <dd>Restriction to 8 columns and 8192 rows</dd>
+
+      <dt>2011-08-25</dt>
+      <dd>Extended restriction to 8 columns (which will likely be the time dimension in most cases) and 16384 rows, and added a warning if file is truncated</dd>
+
+      <dt>2011-08-14</dt>
+      <dd>Corrected typo: qs:dataSet instead of qs:dataset</dd>
+
+      <dt>2011-07-24</dt>
+      <dd>Corrected property URIs in DSD to lowercase, added <a href="feed.rdf">feed with last change date</a></dd>
+
+      <dt>2011-07-21</dt>
+      <dd>Added sameAs links to <a href="http://nuts.psi.enakting.org/">NUTS (from the EnAKTing project)</a> in <a href="/dic/geo">dic/geo</a></dd>
+
+      <dt>2011-05-26</dt>
+      <dd>Added sameAs links to <a href="http://nuts.geovocab.org/">NUTS (with geometries)</a> in <a href="/dic/geo">dic/geo</a></dd>
+
+      <dt>2011-02-12</dt>
+      <dd>Time dimension now also with dcterms:date; minor bugfixes; added measures/dimensions list</dd>
+
+      <dt>2011-02-10</dt>
+      <dd>Fixed changed Eurostat URI for table of contents</dd>
+    
+      <dt>2011-01-21</dt>
+      <dd>Added RDF Data Cube vocab data structure definitions (under /dsd/{id}), added de and fr labels to dictionary files</dd>
+      
+      <dt>2010-12-16</dt>
+      <dd>Data adheres to the RDF Data Cube vocab; visualisations work on the new data.</dd>
+      
+      <dt>2010-09-25</dt>
+      <dd>Added <a href="dic/nace_r2">NACE</a> mappings to European Union data</dd>
+      
+      <dt>2010-09-24</dt>
+      <dd>Added restriction to 16 columns and 1024 rows due to GAE resource limitations</dd>
+      
+      <dt>2010-09-23</dt>
+      <dd>Added ToC and <a href="dic/geo">geographical</a> mappings to European Union data and UN FAO</dd>
+      
+      <dt>2010-09-16</dt>
+      <dd>Added dataset description to <a href="http://www.ckan.net/package/linked-eurostat">CKAN</a></dd>
+      
+      <dt>2010-08-24</dt>
+      <dd>Now dictionary files are correctly converted</dd>
+      
+      <dt>2010-07-21</dt>
+      <dd>Updated wrapper to Eurostat's new download scheme</dd>
+    </dl>
+
+    <hr/>
+    <a href="http://ontologycentral.com/">OntologyCentral</a>, 2009-2016.
+  </body>
+</html>
