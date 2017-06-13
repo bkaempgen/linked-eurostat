@@ -52,7 +52,7 @@ public class DsdServlet extends HttpServlet {
 
 			String encoding = conn.getContentEncoding();
 			if (encoding == null) {
-				encoding = "ISO-8859-1";
+				encoding = Listener.DEFAULT_ENCODING;
 			}
 
 			ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
