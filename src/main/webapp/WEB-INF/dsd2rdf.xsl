@@ -64,6 +64,7 @@
 	    </qb:dimension>
 	  </rdf:Description>
 	</qb:component>
+	<!--
 	<qb:component>
 	  <rdf:Description>
 	    <qb:dimension>
@@ -73,6 +74,7 @@
 	    </qb:dimension>
 	  </rdf:Description>
 	</qb:component>
+	-->
 
 	<xsl:for-each select="sdmx:CodeLists/structure:CodeList">
 	  <qb:component>
@@ -109,7 +111,14 @@
 		  </qb:attribute>
 		</xsl:when>
 		<xsl:when test="@id = 'CL_GEO'">
-		<!-- Do nothing. -->
+		  <qb:attribute>
+		    <rdfs:Property rdf:about="http://ontologycentral.com/2009/01/eurostat/ns#geo">
+		      <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+		      <qb:codeList>
+			<xsl:attribute name="rdf:resource">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
+		      </qb:codeList>
+		    </rdfs:Property>
+		  </qb:attribute>
 		</xsl:when>
 		<xsl:otherwise>
 		  <qb:dimension>
@@ -151,13 +160,13 @@
   </xsl:template>
 
   <xsl:template match='structure:CodeList'>
-    <xsl:if test="@id != 'CL_GEO'">
+<!--    <xsl:if test="@id != 'CL_GEO'"> -->
       <skos:ConceptScheme>
 	<xsl:attribute name="rdf:about">#<xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></xsl:attribute>
 	<skos:notation><xsl:value-of select="translate(@id, $uppercase, $lowercase)"/></skos:notation>
 	<xsl:apply-templates/>
       </skos:ConceptScheme>
-    </xsl:if>
+<!--    </xsl:if> -->
   </xsl:template>
 
   <xsl:template match='structure:Name|structure:Description'>

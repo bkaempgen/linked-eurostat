@@ -223,11 +223,11 @@ public class DictionaryGeo extends Dictionary {
 			out.writeEndElement();
 		}
 
-		if (_c.contains(id)) {
-			out.writeStartElement("owl:sameAs");
-			out.writeAttribute("rdf:resource", "http://ec.europa.eu/eurostat/ramon/rdfdata/countries.rdf#" + id);				
-			out.writeEndElement();
-		}
+//		if (_c.contains(id)) {
+//			out.writeStartElement("owl:sameAs");
+//			out.writeAttribute("rdf:resource", "http://ec.europa.eu/eurostat/ramon/rdfdata/countries.rdf#" + id);				
+//			out.writeEndElement();
+//		}
 		
 		if (_ec.contains(id)) {
 			out.writeStartElement("owl:sameAs");
@@ -242,17 +242,17 @@ public class DictionaryGeo extends Dictionary {
 		}
 
 		if (_nuts.contains(id)) {
-//			out.writeStartElement("owl:sameAs");
-//			out.writeAttribute("rdf:resource", "http://rdfdata.eionet.europa.eu/ramon/nuts/" + id);				
-//			out.writeEndElement();
+			out.writeStartElement("owl:sameAs");
+			out.writeAttribute("rdf:resource", "http://rdfdata.eionet.europa.eu/ramon/nuts/" + id);				
+			out.writeEndElement();
 //
 //			out.writeStartElement("owl:sameAs");
 //			out.writeAttribute("rdf:resource", "http://eris.okfn.org/ww/2010/12/eurostat/nuts#" + id);				
 //			out.writeEndElement();
 //
-			out.writeStartElement("owl:sameAs");
-			out.writeAttribute("rdf:resource", "http://nuts.psi.enakting.org/id/" + id);				
-			out.writeEndElement();
+//			out.writeStartElement("owl:sameAs");
+//			out.writeAttribute("rdf:resource", "http://nuts.psi.enakting.org/id/" + id);				
+//			out.writeEndElement();
 
 			out.writeStartElement("owl:sameAs");
 			out.writeAttribute("rdf:resource", "http://nuts.geovocab.org/id/" + id);				
