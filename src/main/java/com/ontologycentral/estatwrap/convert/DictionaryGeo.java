@@ -139,7 +139,6 @@ public class DictionaryGeo extends Dictionary {
 		_dbpedia.put("US", "United_states");
 		_dbpedia.put("UY", "Uruguay");
 
-		
 		_map.put("AR", "Argentina");
 		_map.put("AT", "Austria");
 		_map.put("BE", "Belgium");
@@ -196,14 +195,18 @@ public class DictionaryGeo extends Dictionary {
 				//http://rdfdata.eionet.europa.eu/ramon/ontology/NUTSRegion
 				out.writeStartElement("ramon:NUTSRegion");
 				out.writeAttribute("rdf:ID", id);
-				
+
 				out.writeStartElement("rdfs:label");
 				out.writeAttribute("xml:lang", lang);
 				out.writeCharacters(label);
 				out.writeEndElement();
-				
+
+				out.writeStartElement("skos:notation");
+				out.writeCharacters(id);
+				out.writeEndElement();
+
 				addMappings(out, id);
-				
+
 				out.writeEndElement();
 			} catch (NoSuchElementException ne) {
 				System.err.println(line + " " + ne);

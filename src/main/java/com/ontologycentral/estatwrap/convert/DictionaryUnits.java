@@ -11,15 +11,15 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class DictionaryUnits extends Dictionary {
 	public static String PREFIX = "/dic/";
-	
+
 	Logger _log = Logger.getLogger(this.getClass().getName());
 
 	Map<String, String> _map;
-	
+
 	public DictionaryUnits(Reader is, String file) throws IOException {
 		super(is, file);
 		_map = new HashMap<String, String>();
-		
+
 		_map.put("1000", "Thousand");
 		_map.put("MIO", "Million");
 		_map.put("T", "Tonne");

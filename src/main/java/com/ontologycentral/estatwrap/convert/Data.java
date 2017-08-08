@@ -13,14 +13,14 @@ public class Data {
 	Logger _log = Logger.getLogger(this.getClass().getName());
 
 	public static String PREFIX = "http://ontologycentral.com/2009/01/eurostat/ns#";
-	
+
 	BufferedReader _in;
-	
+
 	// here, use a threshold to limit the amount of data converted (GAE limitations)
 	// added * 8 to remove restriction
 	public static int MAX_COLS = 8*10;
 	public static int MAX_ROWS = 1024*8*10;
-	
+
 	public Data(Reader sr) throws IOException {
 		_in = new BufferedReader(sr);
 	}
@@ -41,7 +41,7 @@ public class Data {
 
 			h = new Header(line);
 		}
-		
+
 		while ((line = _in.readLine()) != null) {
 			++rows;
 			line = line.trim();
@@ -52,7 +52,7 @@ public class Data {
 			l = new Line(line);
 
 			printTriple(h, l, out, rows, id);
-			
+
 			if (rows > MAX_ROWS) {
 				break;
 			}
@@ -141,7 +141,7 @@ public class Data {
 			//http://purl.org/linked-data/sdmx/2009/measure#obsValue
 			// do not print empty values
 			String val = (String)lcol.get(i).trim();
-			if (!val.equals(":")) {
+			if (!val.equals(":") || !"".equals(val)) {
 				out.writeStartElement("sdmx-measure:obsValue");
 
 				String note = null;
@@ -156,19 +156,19 @@ public class Data {
 						val = "";
 						out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#string");
 					} else {
-						out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#double");
+						out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#decimal");
 					}
 
 				} else if (val.equals(":")) {
 					val = "";
 				} else {
 					try {
-						double d = Double.parseDouble(val);
+						Double.parseDouble(val);
 					} catch (NumberFormatException e) {
 						_log.info("not a number " + val);
 						val = "";
 					}
-					out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#double");
+					out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#decimal");
 				}
 
 				out.writeCharacters(val);
