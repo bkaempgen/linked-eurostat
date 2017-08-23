@@ -21,10 +21,14 @@ public class Data {
 	public static int MAX_COLS = 8*10;
 	public static int MAX_ROWS = 1024*8*10;
 
+	/**
+	 */
 	public Data(Reader sr) throws IOException {
 		_in = new BufferedReader(sr);
 	}
-	
+
+	/**
+	 */
 	public void convert(XMLStreamWriter out, String id) throws IOException, XMLStreamException {
 		String line = null;
 
@@ -61,6 +65,8 @@ public class Data {
 		_in.close();
 	}
 
+	/**
+	 */
 	public void printTriple(Header h, Line l, XMLStreamWriter out, int bnodeid, String id) throws XMLStreamException {
 		List<String> hd1 = h.getDim1();
 		List<String> ld1 = l.getDim1();
@@ -75,10 +81,10 @@ public class Data {
 		if (hcol.size() != lcol.size()) {
 			System.err.println("header columns and line columns don't match!");
 		}
-		
+
 		int start = 0;
 		int end = Math.min(hcol.size(), MAX_COLS);
-		
+
 		// hack - some stats are sorted from oldest to newest, some the other way round
 		// check if the last entry contains year 200x or 201x
 		String last = (String)hcol.get(hcol.size()-1);
@@ -90,7 +96,7 @@ public class Data {
 			}
 			end = hcol.size();
 		}
-		
+
 		if (start != 0 || end != hcol.size()) {
     		out.writeStartElement("rdf:Description");
     		out.writeAttribute("rdf:about", "");
@@ -104,9 +110,9 @@ public class Data {
 			if (((String)lcol.get(i)).trim().equals(":")) {
 				continue;
 			}
-			
+
     		out.writeStartElement("qb:Observation");
-    		
+
     		out.writeStartElement("qb:dataSet");
     		out.writeAttribute("rdf:resource", "/id/" + id + "#ds");
     		// @@@ workaround to get query processor to function
@@ -126,7 +132,7 @@ public class Data {
 					out.writeEndElement();
 				}
 			}
-			
+
 			if (h.getDim2().equals("time")) {
 				String time = convertTime(hcol.get(i));
 	    		out.writeStartElement("dcterms:date");
@@ -142,49 +148,93 @@ public class Data {
 			// do not print empty values
 			String val = (String)lcol.get(i).trim();
 			if (!val.equals(":") || !"".equals(val)) {
-				out.writeStartElement("sdmx-measure:obsValue");
-
 				String note = null;
 
-				// Different encodings of values
+				// Different encodings of values (annotations with single characters)
 				if (val.indexOf(' ') > 0) {
 					note = val.substring(val.indexOf(' ')+1);
 					val = val.substring(0, val.indexOf(' '));
-					// Datatype is double, always.
-					//out.writeAttribute("rdf:datatype", Dictionary.PREFIX + "note#" + note);
 					if (val.equals(":")) {
 						val = "";
-						out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#string");
-					} else {
-						out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#decimal");
 					}
-
-				} else if (val.equals(":")) {
-					val = "";
-				} else {
-					try {
-						Double.parseDouble(val);
-					} catch (NumberFormatException e) {
-						_log.info("not a number " + val);
-						val = "";
-					}
-					out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#decimal");
 				}
 
-				out.writeCharacters(val);
-				out.writeEndElement();
+				// : is empty value
+				if (val.equals(":")) {
+					val = "";
+				}
+				
+				// strip whitespace
+				val = val.replaceAll("^/+", "");
+				val = val.replaceAll("/+$", "");
+
+				// only write non-empty values
+				if (!"".equals(val)) {
+					try {
+						Double.parseDouble(val);
+
+						// only write number values
+						out.writeStartElement("sdmx-measure:obsValue");
+						// Datatype is always decimal
+						out.writeAttribute("rdf:datatype", "http://www.w3.org/2001/XMLSchema#decimal");
+						out.writeCharacters(val);
+						out.writeEndElement();
+					} catch (NumberFormatException e) {
+						_log.info("not a number " + val);
+					}
+				}
 
 				// there's a note (most probably 'p' for provisional?)
 				if (note != null) {
 		    		out.writeStartElement("rdfs:comment");
 		    		out.writeCharacters(note);
+
+					if (note.contains("b")) {
+						out.writeCharacters(" (break in time series)");
+					}
+					if (note.contains("c")) {
+						out.writeCharacters(" (confidential)");
+					}
+					if (note.contains("d")) {
+						out.writeCharacters(" (definition differs, see metadata)");
+					}
+					if (note.contains("e")) {
+						out.writeCharacters(" (estimated)");
+					}
+					if (note.contains("f")) {
+						out.writeCharacters(" (forecast)");
+					}
+					if (note.contains("i")) {
+						out.writeCharacters(" (see metadata - phased out)");
+					}
+					if (note.contains("n")) {
+						out.writeCharacters(" (not significant)");
+					}
+					if (note.contains("p")) {
+						out.writeCharacters(" (provisional)");
+					}
+					if (note.contains("r")) {
+						out.writeCharacters(" (revised)");
+					}
+					if (note.contains("s")) {
+						out.writeCharacters(" (Eurostat estimate - phased out)");
+					}
+					if (note.contains("u")) {
+						out.writeCharacters(" (low reliability)");
+					}
+					if (note.contains("z")) {
+						out.writeCharacters(" (not applicable)");
+					}
+		    			
 		    		out.writeEndElement();	
 				}
 			}
     		out.writeEndElement();
 		}
 	}
-	
+
+	/**
+	 */
 	String convertTime(String time) {
 		if (time.length() > 4) {
 			if (time.contains("M")) {
