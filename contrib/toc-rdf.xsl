@@ -15,6 +15,10 @@
 
   <xsl:template match="nt:tree">
     <rdf:RDF>
+      <rdf:Description rdf:about="">
+	<rdfs:comment>Generated from http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&amp;file=table_of_contents.xml</rdfs:comment>
+	<dc:date><xsl:value-of select="current-dateTime()"/></dc:date>
+      </rdf:Description>
       <xsl:apply-templates/>
     </rdf:RDF>
   </xsl:template>

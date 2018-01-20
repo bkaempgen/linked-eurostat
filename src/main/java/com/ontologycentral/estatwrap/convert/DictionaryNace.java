@@ -10,11 +10,11 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class DictionaryNace extends Dictionary {
 	public static String PREFIX = "/dic/";
-	
+
 	Logger _log = Logger.getLogger(this.getClass().getName());
 
 	Map<String, String> _map;
-	
+
 	public DictionaryNace(Reader is, String file) throws IOException {
 		super(is, file);
 	}
@@ -25,7 +25,7 @@ public class DictionaryNace extends Dictionary {
 		out.writeStartElement("owl:sameAs");
 		out.writeAttribute("rdf:resource", "http://rdfdata.eionet.europa.eu/eurostatdic/nace_r2/" + id);				
 		out.writeEndElement();
-			
+
 		if (id.length() == 1) {
 			out.writeStartElement("owl:sameAs");
 			out.writeAttribute("rdf:resource", "http://ec.europa.eu/eurostat/ramon/rdfdata/nace_r2/" + id);				

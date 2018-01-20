@@ -37,7 +37,12 @@
 	<h1>Table of Contents</h1>
 
 	<p>
-	  As of <xsl:value-of  select="current-dateTime()"/>.
+	  Generated from
+	  <a>
+	    <xsl:attribute name="href">http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&amp;file=table_of_contents.xml</xsl:attribute>
+	    ec.europa.eu
+	  </a>
+	    at <xsl:value-of  select="current-dateTime()"/>.
 	</p>
 
 	<xsl:apply-templates/>

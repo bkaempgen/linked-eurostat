@@ -20,7 +20,7 @@ public class DictionaryPage {
 		ch.writeNamespace("foaf", "http://xmls.com/foaf/0.1/");
 		ch.writeNamespace("ramon", "http://rdfdata.eionet.europa.eu/ramon/ontology/");
 		ch.writeNamespace("skos", "http://www.w3.org/2004/02/skos/core#");
-		
+
 		ch.writeStartElement("rdf:Description");
 		ch.writeAttribute("rdf:about", "");
 		ch.writeStartElement("rdfs:comment");
@@ -38,13 +38,18 @@ public class DictionaryPage {
 		ch.writeEndElement();
 
         Dictionary d = null;
-        
+
         for (int i = 0; i < rs.size(); i++) {
         	Reader r = rs.get(i);
         	String lang = langs[i];
-        	
+
         	if ("geo".equals(id)) {
         		d = new DictionaryGeo(r, id, nuts);
+        	} else if ("cities".equals(id)) {
+        		d = new DictionaryCities(r, id);
+        	} else if ("metroreg".equals(id)) {
+        		// metroreg has same structure as cities
+        		d = new DictionaryCities(r, id);
         	} else if ("unit".equals(id)) {
         		d = new DictionaryUnits(r, id);
         	} else if ("nace_r2".equals(id)) {
@@ -55,7 +60,7 @@ public class DictionaryPage {
 
         	d.convert(ch, lang);
         }
-        
+
         ch.writeEndElement();
         ch.writeEndDocument();
 	}

@@ -19,11 +19,15 @@
     </p>
 
     <p>
-      We provide a <a href="table_of_contents.html">table of contents</a> (also available: <a href="table_of_contents.rdf">table of contents as RDF</a>). <!-- and a <a href="feed.rdf">list of recently updated datasets</a>. -->
+      We provide a <a href="table_of_contents.html">table of contents</a> of all datasets (also available: <a href="table_of_contents.rdf">table of contents as RDF</a>). <!-- and a <a href="feed.rdf">list of recently updated datasets</a>. -->
     </p>
-	
+
     <p>
-      Nearby: <a href="http://ontologycentral.com/2009/01/eurostat/">about the Eurostat wrapper</a>.
+      <a href="http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&dir=dic%2Fen">List of dictionary files at Eurostat</a>.
+    </p>
+
+    <p>
+      Nearby: <a href="http://ontologycentral.com/2009/01/eurostat/">about the Eurostat wrapper</a>, <a href="https://github.com/bkaempgen/linked-eurostat">code at Github</a>.
     </p>
     
     <h2>Some Example Datasets</h2>
@@ -39,12 +43,10 @@
       <dd>Unemployment rate, by sex</dd>
       <dt><a href="./id/tespn020">/id/tespn020</a></dt>
       <dd>Median relative income of elderly people (source: SILC)</dd>
-      <!--
-      <dt><a href="/id/tsdec420">/id/tsdec420</a></dt>
-      <dd>Employment rate, by sex</dd>
-      <dt><a href="/id/teicp000">/id/teicp000</a></dt>
-      <dd>Harmonized indices of consumer prices (HICP) - all items</dd>
-      -->
+      <dt><a href="/id/urb_cpop1">/id/urb_cpop1</a></dt>
+      <dd>Population on 1 January by age groups and sex - cities and greater cities</dd>
+      <dt><a href="/id/nama_10_pe">/id/nama_10_pe</a></dt>
+      <dd>Population and employment</dd>
       <dt><a href="/id/tec00118">/id/tec00118</a></dt>
       <dd>Harmonized indices of consumer prices (HICP) - inflation rate</dd>
     </dl>
@@ -53,9 +55,15 @@
 
     <dl>
       <dt><a href="/dic/geo">/dic/geo</a></dt>
-      <dd>Geographical</dd>
+      <dd>Geographical identifiers (mostly <a href="https://en.wikipedia.org/wiki/Nomenclature_of_Territorial_Units_for_Statistics">NUTS</a>)</dd>
+      <dt><a href="/dic/cities">/dic/cities</a></dt>
+      <dd>Geographical identifiers for Urban Audit statistics</dd>
+      <dt><a href="/dic/metroreg">/dic/metroreg</a></dt>
+      <dd>Geographical identifiers for metropolitan area statistics</dd>
+    </dl>
+    <dl>
       <dt><a href="/dic/na_item">/dic/na_item</a></dt>
-      <dd>Na item?</dd>
+      <dd>Indicators</dd>
       <dt><a href="/dic/sex">/dic/sex</a></dt>
       <dd>Sex</dd>
       <dt><a href="/dic/unit">/dic/unit</a></dt>
@@ -67,21 +75,23 @@
     
     <dl>
       <dt>2018-01-20</dt>
-      <dd>
-	HTTP requests to Eurostat are cachable.
-      </dd>
+      <dd>Enable caching on HTTP requests to Eurostat.</dd>
+
+      <dt>2017-08-03</dt>
+      <dd>Removed external link to geo codelist.</dd>
+
+      <dt>2017-06-22</dt>
+      <dd>Unicode fix, more links to dictionary files.</dd>
+
       <dt>2017-01-27</dt>
-      <dd>
-	Minor fixes, project mavenised.
-      </dd>
+      <dd>Minor fixes, project mavenised.</dd>
+
       <dt>2017-01-02</dt>
-      <dd>
-	Reduced truncation.
-      </dd>
+      <dd>Reduced truncation.</dd>
+
       <dt>2016-07-14</dt>
-      <dd>
-	Moved to updated SPARQL processing endpoint.
-	</dd>
+      <dd>Moved to updated SPARQL processing endpoint.</dd>
+
       <dt>2013-09-21</dt>
       <dd>Adapted modeling closer towards <a href="http://www.w3.org/TR/vocab-data-cube/">RDF Data Cube specification</a></dd>
     
@@ -141,6 +151,6 @@
     </dl>
 
     <hr/>
-    <a href="http://ontologycentral.com/">OntologyCentral</a>, 2009-2016.
+    <a href="http://ontologycentral.com/">OntologyCentral</a>, 2009-2017.
   </body>
 </html>

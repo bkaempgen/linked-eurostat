@@ -92,7 +92,7 @@ public class DictionaryServlet extends HttpServlet {
 
 					String encoding = conn.getContentEncoding();
 					if (encoding == null) {
-						encoding = "ISO-8859-1";
+						encoding = Listener.DEFAULT_ENCODING;
 					}
 
 					BufferedReader in = new BufferedReader(new InputStreamReader(is, encoding));

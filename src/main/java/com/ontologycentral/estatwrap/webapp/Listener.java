@@ -46,6 +46,8 @@ public class Listener implements ServletContextListener {
 
 	public static String NUTS = "nuts";	
 
+	public static String DEFAULT_ENCODING = "utf-8";
+
 	public void contextInitialized(ServletContextEvent event) {
 		ServletContext ctx = event.getServletContext();
 
