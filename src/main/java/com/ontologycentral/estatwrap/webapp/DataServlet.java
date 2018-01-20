@@ -60,7 +60,12 @@ public class DataServlet extends HttpServlet {
 			// Try maximum of 60 sec for HTTP request? Maybe 55sec
 			conn.setConnectTimeout(55*1000);
 			conn.setReadTimeout(55*1000);
-			
+			// Java ssems to use Cache-Control: no-cache and Pragma: no-cache - why?
+			// disable
+			conn.setUseCaches(true);
+
+			conn.setRequestProperty("User-Agent", "estatwrap.ontologycentral.com");
+
 			InputStream is = new GZIPInputStream(conn.getInputStream());
 
 			if (conn.getResponseCode() != 200) {
@@ -75,7 +80,7 @@ public class DataServlet extends HttpServlet {
 			BufferedReader in = new BufferedReader(new InputStreamReader(is, encoding));
 
 			// 1 hour
-    		resp.setHeader("Cache-Control", "public,max-age=600");
+    		resp.setHeader("Cache-Control", "max-age=600");
 
 //			resp.setHeader("Cache-Control", "public");
 //			Calendar c = Calendar.getInstance();

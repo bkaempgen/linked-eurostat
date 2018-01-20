@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -14,15 +16,24 @@ import com.ontologycentral.estatwrap.Main;
 import junit.framework.TestCase;
 
 public class DataTest extends TestCase {
+	static final Logger _log = Logger.getLogger(DataTest.class.getName());
+
 	public void testData() throws Exception {
 		String id = "teimf040"; // "dt_oth_3d51_03"; //"earn_ses_actrl";
 		
 		URL url = new URL(Main.URI_PREFIX + "?file=data/" + id + ".tsv.gz");
 		//URL url = new URL("http://europa.eu/estatref/download/everybody/data/" + id + ".tsv.gz");
         
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+		_log.log(Level.INFO, "{0}", url);
+
+		HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        _log.log(Level.INFO, "{0}", conn.getRequestProperties());
+
+        conn.addRequestProperty("User-Agent", "wget");
         InputStream is = new GZIPInputStream(conn.getInputStream());
-        
+
+        _log.log(Level.INFO, "{0}", conn.getHeaderFields());
+
 //		resp.setHeader("Cache-Control", "public");
 //		Calendar c = Calendar.getInstance();
 //		c.add(Calendar.DATE, 1);

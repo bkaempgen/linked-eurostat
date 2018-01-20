@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.cache.Cache;
@@ -76,10 +77,11 @@ public class DictionaryServlet extends HttpServlet {
 				System.out.println("looking up " + url);
 
 				if (cache.containsKey(url)) {
+					_log.log(Level.INFO, "Accessing cache: {0}", url);
 					sr = new StringReader((String)cache.get(url));
-				}
+				} else {
+					_log.log(Level.INFO, "Accessing URI: {0}", url);					
 
-				if (sr == null) {
 					HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 					InputStream is = conn.getInputStream();
 

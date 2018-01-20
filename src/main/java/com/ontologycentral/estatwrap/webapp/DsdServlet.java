@@ -44,6 +44,10 @@ public class DsdServlet extends HttpServlet {
 			conn.setConnectTimeout(8*1000);
 			conn.setReadTimeout(8*1000);
 
+			conn.setUseCaches(true);
+
+			conn.setRequestProperty("User-Agent", "estatwrap.ontologycentral.com");
+
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("lookup on " + u + " resulted HTTP in status code " + conn.getResponseCode());
 			}
@@ -85,7 +89,7 @@ public class DsdServlet extends HttpServlet {
 			resp.setContentType("application/rdf+xml");
 
 			// 1 day
-    		resp.setHeader("Cache-Control", "public,max-age=86400");
+    		resp.setHeader("Cache-Control", "max-age=86400");
 
 			StreamSource ssource = new StreamSource(zis);
 			StreamResult sresult = new StreamResult(os);
