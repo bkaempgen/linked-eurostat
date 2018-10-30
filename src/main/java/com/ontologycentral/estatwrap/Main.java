@@ -36,7 +36,7 @@ import com.ontologycentral.estatwrap.convert.Dictionary;
  */
 public class Main {
 	// that changes once in a while
-	public static String URI_PREFIX = "http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing";
+	public static String URI_PREFIX = "https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing";
 
 	public static SimpleDateFormat RFC822 = new SimpleDateFormat("EEE', 'dd' 'MMM' 'yyyy' 'HH:mm:ss' 'Z", Locale.US);
 	public static SimpleDateFormat ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");

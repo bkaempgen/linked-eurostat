@@ -26,7 +26,7 @@ public class CreateToCTest extends TestCase {
 	 */
 	public void testCreateToC() throws Exception {
 		for (String format : new String[] { "rdf", "html" } ) {
-			URL u = new URL("http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=table_of_contents.xml");
+			URL u = new URL("https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=table_of_contents.xml");
 
 			HttpURLConnection conn = (HttpURLConnection)u.openConnection();
 			InputStream is = conn.getInputStream();
